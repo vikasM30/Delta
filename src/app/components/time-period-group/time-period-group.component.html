@@ -1,0 +1,4 @@
+<div>
+  <app-filter *ngFor="let filter of filterConfigs| keyvalue" [filterConfig]="filter.value"
+  style="display: inline-block;width: 120px;" class="mr-1 float-left"></app-filter>
+</div>

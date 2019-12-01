@@ -1,0 +1,61 @@
+<div class="col-md-12 float-left  mt-5 pt-4">
+    <app-loader [show]="showLoader"></app-loader>
+    <app-filter-chip-list></app-filter-chip-list>
+    <h3 class="mt-2 mb-2 float-left col-4 pt-1 pos-rel" style="font-size: 24px;color:#29a84a">Brand Perceptions (%) <i class="font-xs ml-2 text-dark">Base: Aware of brand</i>   <div class="titleOnHover"><b>Overall Brand Perceptions</b> : BRIA</div></h3>
+  
+    <app-chart-container *ngFor="let config of brandPerceptionsArray" [chart]="config" [updateData]="onDataUpdate"></app-chart-container>
+    <div class="float-right  mt-1 mr-3"><span class="mr-4" hidden><i class="fa fa-caret-up text-success mr-2 fa-2x"></i> <i
+                class="fa-2x fa fa-caret-down text-danger mr-2"></i><span>Significant @ 95% level</span></span>
+        <i class="fa fa-download font-sm border rounded p-2 clickable mr-2" hidden title="Download Regression Analysis"></i>
+        <i class="fa fa-table font-sm border rounded p-2 clickable mr-2" hidden title="Switch to Table View"></i>
+        <i class="fa fa-line-chart font-sm border rounded p-2 clickable" hidden title="Switch to Trended View"></i>
+        <div class="float-right">
+                <img src="../../../assets/images/excel.png" title="Download Excel" class="mr-2 clickable"
+                    style="height:20px;" (click)=downloadExcelFile()/>
+                <!-- <img src="../../../assets/images/ppt.png" title="Download PPT" class="clickable"
+                    style="height:20px;" /> -->
+            </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="col-12">       
+                <table class="table table-bordered table-fixed w-100 legendtable text-center mb-2" style="font-size: .85rem;">
+                    <tr>
+                        <td>Indexed to Overall Market Average</td>
+                        <td> <span style="background-color: #92D050" class="legend-box mr-1"></span><span> Overindex: 120 or higher</span></td>
+                        <td> <span style="background-color: #E5F995" class="legend-box mr-1"></span><span>Overindex: 110 - 119</span></td>
+                        <td> <span style="background-color: #ffffff" class="legend-box mr-1 border"></span><span>Average: 91 - 109</span></td>
+                        <td> <span style="background-color: #FFCCCE" class="legend-box mr-1"></span><span>Underindex: 81 - 90</span></td>
+                        <td> <span style="background-color: #FF656D" class="legend-box mr-1"></span><span>Underindex: 80 or lower</span></td>
+                    </tr>
+                </table>
+        <table id="brandHeader" [style.width.px]="getContentWidth()"  class="table table-bordered mb-0">
+            <tr class="brandList">
+                <td class="text-center"><label class="font-weight-bold">Faucet Driver</label></td>
+                <td style="width:35%"></td>
+                <td class="text-center"><label class="font-weight-bold">Market Average</label></td>
+                <td class="text-center"  *ngFor="let logo of brandList"><img src="{{logo}}" /></td>               
+            </tr>
+        </table>
+        <div class="overflow" [style.height.px]="getContentHeight()">
+            <table id="brandData" class="table table-bordered w-100 mb-0">
+                <tr *ngFor="let brandData of branPerceptionTableData; let k= index">
+                    <td class="text-center" [style.color]="getBgColor(brandData.KDA)">{{brandData.KDA}}</td>
+                    <td  style="width:35%">{{brandData.question}}</td>
+                    <td class="text-center">{{brandData.avg}}
+                        <!-- <i class="fa fa-caret-up text-success ml-2 mr-2 fa-2x"></i> 
+                              <i class="fa-2x fa fa-caret-down text-danger mr-2"></i></td> -->
+                    <td class="text-center text-white base pos-rel" [ngClass]="{'text-white' :brandValue.colorCode !== '#fff' && brandValue.colorCode !== '#FFCCCE' && brandValue.colorCode !== '#E5F995' }" *ngFor="let brandValue of brandData.productValues; let i = index"
+                    [style.backgroundColor]="brandValue.colorCode">
+                        {{brandValue.Score | roundOff}}
+                        <div class="baseCount">Base: {{brandValue.Base}}</div>  
+                    </td>
+                </tr>
+            </table>
+            <div class="alert alert-info font-sm text-center col-md-4 ml-auto mr-auto mt-4" *ngIf="!branPerceptionTableData">No Data Available</div>
+        </div>
+    </div>
+    <div class="col-12 p-0" hidden>
+        Trended View
+    </div>
+    <div class="clearfix"></div>
+</div>

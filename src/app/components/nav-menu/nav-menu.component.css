@@ -1,0 +1,3 @@
+.panel-title a{text-transform: uppercase}
+.nav-pills .active{background-color: #29a84a!important;color:#fff!important}
+.active > a{color:green!important}

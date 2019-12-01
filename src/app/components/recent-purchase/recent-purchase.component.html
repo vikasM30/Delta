@@ -1,0 +1,91 @@
+<div class="col-md-12 float-left  mt-5 pt-4 pb-4">
+    <app-loader [show]="showLoader"></app-loader>
+    <app-filter-chip-list></app-filter-chip-list>
+    <h3 class="mt-2 mb-2 float-left col-5 pt-1" style="font-size: 24px;color:#29a84a">Recent Purchase Funnel (%) -
+        {{categoryHeading}}  <i class="font-xs ml-2 text-dark">Base: Total</i></h3>
+    <div *ngFor="let aware of TotalAwareness">
+        <app-chart-container [chart]="aware" [updateData]="onDataUpdate" style="display: none"></app-chart-container>
+    </div>
+    <div *ngFor="let seriously of SeriouslyConsider">
+        <app-chart-container [chart]="seriously" [updateData]="onDataUpdate" style="display: none"></app-chart-container>
+    </div>
+    <div *ngFor="let purchase of Purchased">
+        <app-chart-container [chart]="purchase" [updateData]="onDataUpdate" style="display: none"></app-chart-container>
+    </div>
+    <div class="float-right mt-1 mr-2">
+        <!-- <span class="mr-4"><i class="fa fa-caret-up text-success mr-2 fa-2x"></i> <i
+                    class="fa-2x fa fa-caret-down text-danger mr-2"></i><span>Significant @ 95% level</span></span><i
+                class="fa fa-line-chart font-sm border rounded p-2 clickable" hidden title="Switch to Trended View"></i> -->
+        <div class="float-right">
+            <img src="../../../assets/images/excel.png" title="Download Excel" class="mr-2 clickable"
+                style="height:20px;" (click)="ExcellExport()" />
+            <!-- <img src="../../../assets/images/ppt.png" title="Download PPT" class="clickable" style="height:20px;" /> -->
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="col-12 overflow">
+        <table class="table table-bordered brandHealth w-100 table-fixed">
+            <tr class="brandList">
+                <td></td>
+                <td *ngFor="let brand of brandList"><img src="{{brand}}" /></td>
+                <!-- <td *ngFor="let Data of TotalAwareness1 "><img src={{logoByBrandCode[Data.Code]}}></td> -->
+            </tr>
+            <tr>
+                <td class="text-right pos-rel"><label>Total Awareness</label>                   
+                    <div class="titleOnHover"><b>Total Awareness</b>: SBAW/ABAW</div>
+                </td>
+                <td class="text-center base" *ngFor="let Data of TotalAwareness1;let i=index">
+                    <div class="col-9 float-left p-0">
+                        <div class="bar-width ml-auto mr-auto" [style.width.%]="Data.score">
+                            <div class="bar-score">{{Data.score| roundOff}}</div>
+                        </div>
+                    </div>
+                    <div class="col-3 float-left pos-rel barBox" *ngIf="CompTotalAndSeriously.length">
+                        <div class="bar-change">{{CompTotalAndSeriously[i]| roundOff}}</div>
+                        <div class="img-change"></div>
+                    </div>
+                    <div class="baseCount">Base: {{Data.base  | roundOff}} </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right pos-rel"><label>Seriously Consider</label>
+                    <div class="titleOnHover"><b>Seriously Consider</b>: RPF_FAU_RECENT_FAU11</div>
+                </td>
+                <td class="text-center base" *ngFor="let Data of SerioslyConsider1;let i = index">
+                    <div class="col-9 float-left p-0">
+                        <div class="bar-width ml-auto mr-auto" [style.width.%]="Data.score">
+                            <div class="bar-score">{{Data.score| roundOff}}</div>
+                        </div>
+                    </div>
+                    <div class="col-3 float-left pos-rel barBox">
+                        <div class="bar-change">{{CompSeriousAndPurchase[i]| roundOff}}</div>
+                        <div class="img-change"></div>
+                    </div>
+                    <div class="baseCount">Base: {{Data.base  | roundOff}} </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right pos-rel"><label>Purchased</label>
+                    <div class="titleOnHover"><b>Purchased</b>: RPF_FAU_RECENT_FAU2</div>
+                </td>
+                <td class="text-center base" *ngFor="let Data of Purchase1">
+                    <div class="col-9 float-left p-0">
+                        <div class="bar-width ml-auto mr-auto" [style.width.%]="(Data.score)">
+                            <div class="bar-score">{{Data.score| roundOff}}</div>
+                        </div>
+                    </div>
+                    <div class="col-3 float-left pos-rel barBox">
+
+
+                    </div>
+                    <div class="baseCount">Base: {{Data.base  | roundOff}} </div>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+    <!-- <div class="col-12 p-0">
+            Trended View
+        </div> -->
+    <div class="clearfix"></div>
+</div>

@@ -1,0 +1,221 @@
+<div class="col-md-12 float-left  mt-5 pt-4 pb-4">
+    <app-loader [show]="showLoader"></app-loader>
+    <app-filter-chip-list></app-filter-chip-list>
+    <h3 class="mt-2 mb-2 float-left col-4 pt-1" style="font-size: 24px;color:#29a84a">Brand Health (%) -
+        {{categoryHeaderName}}</h3>
+    <app-chart-container [chart]="unaided" [updateData]="onDataUpdate"></app-chart-container>
+    <app-chart-container [chart]="totalBrand" [updateData]="onDataUpdate"></app-chart-container>
+    <app-chart-container *ngFor="let config of considerationChart" [chart]="config" [updateData]="onDataUpdate" style="display: none"></app-chart-container>
+    <div *ngFor="let eq of equitychartArray">
+            <app-chart-container [chart]="eq" [updateData]="onDataUpdate"></app-chart-container>
+        </div>
+        <div *ngFor="let st of strongChartArray">
+            <app-chart-container [chart]="st" [updateData]="onDataUpdate"></app-chart-container>
+        </div>
+    <div class="float-right mt-1 mr-2">
+        <!-- <span class="mr-4"><i class="fa fa-caret-up text-success mr-2 fa-2x"></i> <i
+                class="fa-2x fa fa-caret-down text-danger mr-2"></i><span>Significant @ 95% level</span></span><i
+            class="fa fa-line-chart font-sm border rounded p-2 clickable" hidden title="Switch to Trended View"></i> -->
+        <div class="float-right">
+             <img src="../../../assets/images/excel.png" title="Download Excel" class="mr-2 clickable"
+                style="height:20px;" (click)="downloadExcelFile();">
+            <!-- <img src="../../../assets/images/ppt.png" title="Download PPT" class="clickable" style="height:20px;" /> -->
+        </div> 
+    </div>
+    <div class="clearfix"></div>
+    <div class="col-12 overflow">
+        <table class="table table-bordered brandHealth w-100">
+            <tr class="brandList">
+                <td></td>
+                <td *ngFor="let brand of brandList"><img src="{{brand}}" /></td>
+                <!-- <td><img src="../../../assets/images/BrandIcons/Moen_logo_sm.png" /></td>
+                <td><img src="../../../assets/images/BrandIcons/Kohler_logo_sm.png" /></td>
+                <td><img src="../../../assets/images/BrandIcons/Peerless_logo_white_280x90.png" /></td>
+                <td><img src="../../../assets/images/BrandIcons/American_Standard_logo_300x128.png" /></td>
+                <td><img src="../../../assets/images/BrandIcons/Pfister_logo_sm.png" /></td>
+                <td><img src="../../../assets/images/BrandIcons/Waterpik_logo_765x244.png" /></td> -->
+            </tr>
+            <tr>
+                <td class="text-center pos-rel"><label>Unaided Brand</label><br> <i class="font-xs ml-2 text-dark">Base
+                        : Total</i>
+                    <div class="titleOnHover"><b>Unaided Brand</b> : SBAW</div>
+                </td>
+                <td class="base" *ngFor="let col of unaidedData;">
+                        <div class="float-left col-12 pos-rel pr-0">
+                        <div class="pos-rel col-3 float-left">
+                                <div class="bar-score">{{col.Score==='NaN'?0:col.Score}}</div>
+                            </div>
+                            <div class="barBox pos-rel col-9 float-left p-0">
+                                    <div class="bar-width" [style.width.%]="col.Score"></div>                  
+                                
+                            </div>
+                            <div class="baseCount">Base: {{unaidedBases}}</div>
+                        </div>
+                            
+                    <!-- <div class="float-left col-4 pr-0">
+                        <i class="fa fa-caret-down text-danger fa-2x"></i>
+                        <i class="fa fa-caret-up text-success fa-2x"></i>
+                    </div> -->
+                    <div class="clearfix"></div>
+                    <!-- <div class="alert alert-info font-sm text-center col-md-12 ml-auto mr-auto mt-4" *ngIf="!col.Score">No Data Available</div> -->
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center pos-rel"><label>Total Brand (Aided + Unaided)</label><br><i
+                        class="font-xs ml-2 text-dark">Base: Total</i>
+                    <div class="titleOnHover"><b>Total Brand (Aided + Unaided)</b> : SBAW/ABAW</div>
+                </td>
+                <td class="base" *ngFor="let col of totalBrandData;">
+                    <div class="float-left col-12 pos-rel pr-0" *ngIf="col.Score">
+                        <div class="pos-rel col-3 float-left">
+                            <div class="bar-score">{{col.Score}}</div>
+                        </div>
+                        <div class="barBox pos-rel col-9 float-left p-0">
+                                <div class="bar-width" [style.width.%]="col.Score"></div>
+                        </div>
+                        <div class="baseCount">Base: {{totalBrandBase}}</div>
+                    </div>
+                    
+                    <!-- <div class="float-left col-4 pr-0">
+                        <i class="fa fa-caret-down text-danger fa-2x"></i>
+                        <i class="fa fa-caret-up text-success fa-2x"></i>
+                    </div> -->
+                    <div class="clearfix"></div>
+                    <div class="alert alert-info font-sm text-center col-md-12 ml-auto mr-auto mt-4" *ngIf="!col.Score">No Data Available</div>
+
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center pos-rel">
+                        <label>Consideration</label><br><i class="font-xs ml-2 text-dark">Base:
+                                Total</i>
+                            <div class="titleOnHover"><b>Consideration</b> : AAAW</div>
+                    <label>1st/2nd Choice(net)</label>
+                    <div class="titleOnHover"><b>1st/2nd Choice(net)</b> : CBR</div>
+                </td>
+                <td *ngFor="let choice of Choices;">
+                    <div class="text-center font-md pt-5" *ngIf="choice">{{choice}}</div>
+                    <div class="alert alert-info font-sm text-center col-md-12 ml-auto mr-auto mt-4" *ngIf="!choice">No Data Available</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center pos-rel">
+                    <div class="mt-4">
+                        <div class="col-12 text-left">
+                            <div style="background-color: #4d4d4d" class="legend-box float-left mr-2"></div>
+                            <span>First Choice</span>
+                        </div>
+                        <div class="col-12 text-left">
+                            <div style="background-color: #777676" class="legend-box float-left mr-2"></div>
+                            <span>Second Choice</span>
+                        </div>
+                        <div class="col-12 text-left">
+                            <div style="background-color: #969595" class="legend-box float-left mr-2"></div>
+                            <span>Consider </span>
+                        </div>
+                        <div class="col-12 text-left">
+                            <div style="background-color: #B8B8B8" class="legend-box float-left mr-2"></div>
+                            <span>Not Consider</span>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </td>
+                <td class="base" *ngFor="let config of considerationChart; let i = index;">
+                    <div class="card-body pt-4">
+                        <div style="width:100px;height:200px;background-color: #fff;margin: 0 auto;margin-bottom:5px;"
+                            class="pb-0 pos-rel">
+                            <div style="width:100%;height:30%;background-color: #fff"
+                                [style.height.%]="100-FisrtChoice[i]-SecondChoice[i]-Consider[i]-NotConsider[i]"
+                                class="text-white text-center pos-rel">
+                            </div>
+                            <div style="width:100%;height:30%;background-color: #4d4d4d"
+                                [style.height.%]="FisrtChoice[i]" class="text-white text-center pos-rel">
+                                <div class="considerationScore"
+                                    [ngStyle]="{'top':FisrtChoice[i] > 10 ? '40%' : '-20px' ,'color':FisrtChoice[i] > 10 ? 'white' : '#868585'}">
+                                    {{FisrtChoice[i]}}</div>
+                            </div>
+                            <div class="baseCount">Base: {{ConsiderationBases[0]}}</div>
+                            <div style="width:100%;height:20%;background-color: #777676"
+                                [style.height.%]="SecondChoice[i]" class="text-white text-center pos-rel">
+                                <div class="considerationScore">{{SecondChoice[i]}}</div>
+                            </div>
+                            <div style="width:100%;height:40%;background-color: #969595" [style.height.%]="Consider[i]"
+                                class="text-white text-center pos-rel">
+                                <div class="considerationScore">{{Consider[i]}}</div>
+                            </div>
+                            <div style="width:100%;height:10%;background-color: #B8B8B8"
+                                [style.height.%]="NotConsider[i]" class="text-white text-center pos-rel">
+                                <div class="considerationScore">{{NotConsider[i]}}</div>
+                            </div>
+                        </div>
+                        <div class="alert alert-info font-sm text-center col-md-12 ml-auto mr-auto mt-4" *ngIf="(FisrtChoice[i]==0 && SecondChoice[i]==0 && Consider[i]==0 && NotConsider[i]==0)">No Data Available</div>
+                    </div>
+                    <div class="clearfix"></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center pos-rel"><label>Strong Relationships</label><br><i
+                        class="font-xs ml-2 text-dark">Base: Aware of any {{categoryHeaderName}} brand</i>
+                    <div class="titleOnHover"><b>Strong Relationships</b> : CBR/CON</div>
+                </td>
+                <td class="base pos-rel" *ngFor="let brand of strongdata2;">
+                    <div class="text-center font-sm"  *ngIf="brand.score!=0">{{brand.Score}}</div>
+                    <div class="clearfix"></div>
+                    <div class="baseCount">Base: {{brand.base}}</div>
+                    <div *ngIf="brand.score==0"
+                        class="alert alert-info font-sm text-center col-md-12 ml-auto mr-auto mt-4">No Data Available
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center pos-rel"><label>Brand Equity</label><br><i class="font-xs ml-2 text-dark">Base
+                        :Total</i>
+                    <div class="titleOnHover"><b>Brand Equity</b> : CBR</div>
+                    <div class="mt-4">
+                        <div class="col-12 text-left" title="Strong Relationship and Consider 1st/2nd">
+                            <div style="background-color: #669900" class="legend-box float-left mr-2"></div>
+                            <span>Active</span>
+                        </div>
+                        <div class="col-12 text-left" title="Strong Relationship and Also/Not Consider">
+                            <div style="background-color: #CCCC00" class="legend-box float-left mr-2"></div>
+                            <span>Latent</span>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </td>
+                <td class="base" *ngFor="let brand of equitydatawithbrandcode1; let i = index;">
+                    <div class="card-body p-4" *ngIf="brand.Data[0].score!=0 && brand.Data[1].score!=0">
+                        <div style="width:100px;margin: 0 auto;margin-bottom: 5px;padding-bottom:0px!important;"
+                            class="p-0 pb-0">
+                            <div style="height:80px;">
+                                <div [style.height.%]="100-brand.Data[0].score"></div>
+                                <div style="width:100%;height:65%;background-color: #669900"
+                                    [style.height.%]="brand.Data[0].score" class="text-white text-center pos-rel base">
+                                    <div class="considerationScore"
+                                        [ngStyle]="{'top':brand.Data[0].score > 100 ? '4%' : '-15px' ,'color':brand.Data[0].score > 100 ? 'white' : '#868585'}">
+                                        {{brand.Data[0].score}}</div>
+                                    <div class="baseCount" *ngIf="equityBase[i]">Base: {{brand.base}}</div>
+                                </div>
+                            </div>
+                            <div style="width:120%;height:2px;background-color: #4d4d4d;margin-left: -10%"
+                                class="text-white text-center"></div>
+                            <div style="height:80px;">
+                                <div style="width:100%;height:25%;background-color: #CCCC00"
+                                    [style.height.%]="brand.Data[1].score" class="text-white text-center pos-rel base">
+                                    <div class="considerationScore"
+                                        [ngStyle]="{'top':brand.Data[1].score > 100 ? 102 +'%' : '102%' ,'color':brand.Data[1].score > 100 ? 'white' : '#868585'}">
+                                        {{brand.Data[1].score}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="alert alert-info font-sm text-center col-md-12 ml-auto mr-auto mt-4" *ngIf="brand.Data[0].score==0">No Data Available</div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!-- <div class="col-12 p-0">
+        Trended View
+    </div> -->
+    <div class="clearfix"></div>
+</div>

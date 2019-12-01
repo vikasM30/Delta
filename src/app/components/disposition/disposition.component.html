@@ -1,0 +1,563 @@
+<div class="col-md-12 float-left  mt-5 pt-4 pb-4">
+    <app-loader [show]="showLoader"></app-loader>
+    <app-filter-chip-list></app-filter-chip-list>
+    <h3 class="mt-2 mb-2 float-left col-7 pt-1" style="font-size: 24px;color:#29a84a">Purchase Disposition (%) -
+        {{Category}} <i class="font-xs ml-2 text-dark ">Base: Recent {{Category}} replacement / remodel</i>
+    </h3>
+    <app-chart-container [chart]="reasonForBrandAverageChart" [updateData]="onDataUpdate" style="display: none">
+    </app-chart-container>
+    <app-chart-container [chart]="InfluencedDataChart" [updateData]="onDataUpdate" style="display: none">
+    </app-chart-container>
+    <app-chart-container [chart]="installedDataChart" [updateData]="onDataUpdate" style="display: none">
+    </app-chart-container>
+    <app-chart-container [chart]="purchasePriceChart" [updateData]="onDataUpdate" style="display: none">
+    </app-chart-container>
+    <app-chart-container [chart]="purchaseMedianChart" [updateData]="onDataUpdate" style="display: none">
+    </app-chart-container>
+    <app-chart-container [chart]="purchaseAverageChart" [updateData]="onDataUpdate" style="display: none">
+    </app-chart-container>
+    <app-chart-container [chart]="totalBoughtChartInstore" [updateData]="onDataUpdate" style="display: none">
+    </app-chart-container>
+    <app-chart-container [chart]="totalShoppedChartInstore" [updateData]="onDataUpdate" style="display: none">
+    </app-chart-container>
+    <app-chart-container [chart]="totalBoughtChartOnline" [updateData]="onDataUpdate" style="display: none">
+    </app-chart-container>
+    <app-chart-container [chart]="totalShoppedChartOnline" [updateData]="onDataUpdate" style="display: none">
+    </app-chart-container>
+    <app-chart-container [chart]="whereBoughtChartTotal" [updateData]="onDataUpdate" style="display: none">
+    </app-chart-container>
+    <app-chart-container [chart]="whereShoppedChartTotal" [updateData]="onDataUpdate" style="display: none">
+    </app-chart-container>
+    <app-chart-container [chart]="whereBoughtChartInstore" [updateData]="onDataUpdate" style="display: none">
+    </app-chart-container>
+    <app-chart-container [chart]="whereShoppedChartInstore" [updateData]="onDataUpdate" style="display: none">
+    </app-chart-container>
+    <app-chart-container [chart]="whereBoughtChartOnline" [updateData]="onDataUpdate" style="display: none">
+    </app-chart-container>
+    <app-chart-container [chart]="whereShoppedChartOnline" [updateData]="onDataUpdate" style="display: none">
+    </app-chart-container>
+    <app-chart-container [chart]="reasonForCategoryChoice" [updateData]="onDataUpdate" style="display: none">
+    </app-chart-container>
+    
+    <div class="float-right mt-1">
+        <!-- <span class="mr-4"><i class="fa fa-caret-up text-success mr-2 fa-2x"></i> <i
+                        class="fa-2x fa fa-caret-down text-danger mr-2"></i><span>Significant @ 95% level</span></span><i
+                    class="fa fa-line-chart font-sm border rounded p-2 clickable" hidden title="Switch to Trended View"></i> -->
+        <div class="float-right">
+            <img src="../../../assets/images/excel.png" title="Download Excel" class="mr-2 clickable"
+                (click)="downloadExcelFile();" style="height:20px;" />
+            <!-- <img src="../../../assets/images/ppt.png" title="Download PPT" class="clickable" style="height:20px;" /> -->
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="col-12 overflow">
+        <nav class="nav nav-pills nav-justified">
+            <a class="nav-item nav-link active1 clickable border  border-bottom-0 pos-rel" [class.active1]="viewMode == 'tab1'" rel="tab1"
+                (click)="changeTable('Influenced','tab1')">
+                Who Influenced ?               
+                <div class="titleOnHover"><b>Who Influenced</b>: RPF_FAU_RECENT_FAU_12</div>
+            </a>
+            <a class="nav-item nav-link clickable border  border-bottom-0 pos-rel" [class.active1]="viewMode == 'tab2'" rel="tab2"
+                (click)="changeTable('Installed','tab2')">
+                Who Installed ?
+                <div class="titleOnHover"><b>Who Installed</b>: RPF_FAU_RECENT_FAU8</div>
+            </a>
+            <a class="nav-item nav-link clickable border  border-bottom-0 pos-rel" [class.active1]="viewMode == 'tab3'" rel="tab3"
+                (click)="changeTable('Purchase','tab3')">
+                Purchase Price               
+                <div class="titleOnHover"><b>Purchase Price</b>: RPF_FAU_RECENT_FAU10</div>
+            </a>
+            <a class="nav-item nav-link clickable border  border-bottom-0 pos-rel" [class.active1]="viewMode == 'tab4'" rel="tab4"
+                (click)="changeTable('Bought','tab4')">
+                Where Bought/Shopped ?               
+                <div class="titleOnHover"><b>Where Bought/Shopped</b>: RECENT_FAU13a_NEW_1 , RECENT_FAU13b_NEW_CAT_1_1
+                </div>
+            </a>
+            <a class="nav-item nav-link clickable border  border-bottom-0 pos-rel" [class.active1]="viewMode == 'tab5'" rel="tab5"
+                (click)="changeTable('Reasons','tab5')">
+                Reasons for brand choice                
+                <div class="titleOnHover"><b>Reasons for brand choice</b>: RPF_FAU_RECENT_FAU9</div>
+            </a>
+        </nav>
+        <div class="tab-content" id="myTabContent">
+            <div id="tab1" class="hide activeTab border" [class.activeTab]="viewMode == 'tab1'">
+                <table class="table table-bordered brandHealth w-100 table-fixed mb-0">
+                    <tr class="brandList">
+                        <td></td>
+                        <td *ngFor="let brand of brandList"><img src="{{brand}}" /></td>
+                    </tr>
+                    <tr>
+                        <td class="text-right pos-rel"><label>Self</label></td>
+                        <td class="text-center base" *ngFor="let selfdata of selfInfluence; let i = index;">
+                                <div class="col-3 float-left pos-rel">
+                                        <div class="bar-score">{{selfdata==='NaN'?'NA':selfdata}}</div>
+                                    </div>
+                            <div class="col-9 float-left p-0 barBox">
+                                <div class="bar-width" [style.width.%]="selfdata"></div>
+                            </div>                           
+                            <div class="baseCount">Base: {{InfluencedBase[i]}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right pos-rel"><label>Spouse</label></td>
+                        <td class="text-center base" *ngFor="let Spousedata of SpouseInfluence; let i = index;">
+                                <div class="col-3 float-left pos-rel">
+                                        <div class="bar-score">{{Spousedata==='NaN'?'NA':Spousedata}}</div>
+                                    </div>
+                            <div class="col-9 float-left p-0 barBox">
+                                <div class="bar-width" [style.width.%]="Spousedata">
+
+                                </div>
+                            </div>
+                           
+                            <div class="baseCount">Base: {{InfluencedBase[i]}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right pos-rel"><label>Contractor</label></td>
+                        <td class="text-center base" *ngFor="let contractordata of contractorInfluence; let i = index;">
+                                <div class="col-3 float-left pos-rel">
+                                        <div class="bar-score">{{contractordata==='NaN'?'NA':contractordata}}</div>
+                                    </div>
+                            <div class="col-9 float-left p-0 barBox">
+                                <div class="bar-width" [style.width.%]="contractordata">
+
+                                </div>
+                            </div>
+                           
+                            <div class="baseCount">Base: {{InfluencedBase[i]}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right pos-rel"><label>Other</label></td>
+                        <td class="text-center base" *ngFor="let familydata of familyInfluence; let i = index">
+                           <div class="col-3 float-left pos-rel">
+                                        <div class="bar-score">{{familydata==='NaN'?'NA':familydata}}</div>
+                                    </div>
+                                     <div class="col-9 float-left p-0 barBox">
+                                <div class="bar-width" [style.width.%]="familydata"></div>
+                            </div>
+                           
+                            <div class="baseCount">Base: {{InfluencedBase[i]}}</div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="tab2" class="hide border" [class.activeTab]="viewMode == 'tab2'">
+                <table class="table table-bordered brandHealth w-100 table-fixed mb-0">
+                    <tr class="brandList">
+                        <td></td>
+                        <td *ngFor="let brand of brandList"><img src="{{brand}}" /></td>
+                    </tr>
+                    <tr>
+                        <td class="text-right pos-rel"><label>Self</label></td>
+                        <td class="text-center base" *ngFor="let selfdata of selfInstall; let i = index;">
+                                <div class="col-3 float-left pos-rel">
+                                        <div class="bar-score">{{selfdata==='NaN'?'NA':selfdata}}</div>
+                                    </div>
+                            <div class="col-9 float-left p-0 barBox">
+                                <div class="bar-width" [style.width.%]="selfdata"></div>
+                            </div>
+                            
+                            <div class="baseCount">Base: {{InstalledBase[i]}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right pos-rel"><label>Spouse</label></td>
+                        <td class="text-center base" *ngFor="let Spousedata of SpouseInstall; let i= index;">
+                                <div class="col-3 float-left pos-rel">
+                                        <div class="bar-score">{{Spousedata==='NaN'?'NA':Spousedata}}</div>
+                                    </div>
+                            <div class="col-9 float-left p-0 barBox">
+                                <div class="bar-width" [style.width.%]="Spousedata"></div>
+                            </div>
+                           
+                            <div class="baseCount">Base: {{InstalledBase[i]}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right pos-rel"><label>Contractor</label></td>
+                        <td class="text-center base" *ngFor="let contractordata of contractorInstall; let i = index;">
+                                <div class="col-3 float-left pos-rel">
+                                        <div class="bar-score">{{contractordata==='NaN'?'NA':contractordata}}</div>
+                                    </div>
+                            <div class="col-9 float-left p-0 barBox">
+                                <div class="bar-width" [style.width.%]="contractordata"></div>
+                            </div>
+                           
+                            <div class="baseCount">Base: {{InstalledBase[i]}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right pos-rel"><label>Other</label></td>
+                        <td class="text-center base" *ngFor="let familydata of familyInstall; let i = index;">
+                                <div class="col-3 float-left pos-rel">
+                                        <div class="bar-score">{{familydata==='NaN'?'NA':familydata}}</div>
+                                    </div>
+                            <div class="col-9 float-left p-0 barBox">
+                                <div class="bar-width" [style.width.%]="familydata"></div>
+                            </div>
+                           
+                            <div class="baseCount">Base: {{InstalledBase[i]}}</div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="tab3" class="hide border" [class.activeTab]="viewMode == 'tab3'">
+                <table class="table table-bordered brandHealth w-100 table-fixed mb-0">
+                    <tr class="brandList">
+                        <td class="text-center pos-rel"></td>
+                        <td *ngFor="let brand of brandList"><img src="{{brand}}" /></td>
+                    </tr>
+                    <tr *ngFor="let con of purchasePriceArray;">
+                        <td class="text-center pos-rel"><label>{{con.sereiseName}}</label> </td>
+                        <td class="text-center base" *ngFor="let comm of con.seriesdata; let i = index;">
+                                <div class="col-3 float-left pos-rel">
+                                        <div class="bar-score">{{comm==='NaN'?'NA':comm}}</div>
+                                    </div>
+                            <div class="col-9 float-left p-0 barBox">
+                                <div class="bar-width" [style.width.%]="comm"></div>
+                            </div>
+                           
+                            <div class="baseCount">Base: {{PurchasePriceBase[i]}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center pos-rel"><label> Average ($) </label> </td>
+                        <td class="text-center base" *ngFor="let comm of purchaseAverageArray; let i = index;">
+                                <div class="col-12 text-center pos-rel">
+                                    <div class="">{{comm==='NaN'?'NA':comm}}</div>
+                                </div>
+                            <div class="baseCount">Base: {{PurchasePriceBase[i]}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center pos-rel"><label> Median ($)</label> </td>
+                        <td class="text-center base" *ngFor="let comm of purchaseMedianArray; let i = index;">
+                                <div class="col-12 text-center pos-rel">
+                                    <div class="">{{comm==='NaN'?'NA':comm}}</div>
+                                </div>
+                            <div class="baseCount">Base: {{PurchasePriceBase[i]}}</div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="tab4" class="hide border" [class.activeTab]="viewMode == 'tab4'">
+                <select class="form-control col-2 float-right" [(ngModel)]="selectedOnPageLoad" (change)="selectChangeHandler($event)">
+                    <option value="Total" selected> Total </option>
+                    <option value="Instore"> In Store </option>
+                    <option value="Online"> Online </option>
+                </select>
+                <div class="clearfix"></div>
+                <table class="table table-bordered brandHealth mt-2 mb-0">
+                    <tr class="brandList">
+                        <td></td>
+                        <td *ngFor="let brand of brandList"><img src="{{brand}}" /></td>
+                    </tr>
+                </table>
+                <div class="overflow" [style.height.px]="getContentHeight()">
+                    <table *ngIf="ShowData === 'Total'" class="table table-bordered brandHealth w-100">
+                        <!-- <tr class="brandList">
+                            <td></td>
+                            <td *ngFor="let brand of brandList"><img src="{{brand}}" /></td>
+                        </tr> -->
+                        <tr>
+                            <td></td>
+                            <td *ngFor="let brand of brandList">
+                                <div class="col-6 float-left p-0 text-center">
+                                    Bought
+                                </div>
+                                <div class="col-6 float-right p-0 text-center">
+                                    Shopped
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right pos-rel"><label> Total In Store(net) </label></td>
+                            <td class="text-center" *ngFor="let bought of InstoreTotalBought; let i = index;">
+                                <div class="col-6 float-left p-0 base">
+                                        <div class="col-5 float-left pos-rel">
+                                                <div class="bar-score">{{bought==='NaN'?'NA':bought}}</div>
+                                            </div>
+                                    <div class="col-7 float-left p-0 boxBg">
+                                        <div class="bar-width" [style.width.%]="(bought)"></div>
+                                    </div>
+                                   
+                                    <div class="baseCount">Base: {{TotalInstoreBoughtBase[i]}}</div>
+                                </div>
+                                <div class="col-6 float-left p-0 base">
+                                        <div class="col-5 float-left pos-rel">
+                                            <div class="bar-score" *ngIf="InstoreTotalShopped[i]">
+                                                    {{InstoreTotalShopped[i]==='NaN'?'NA':InstoreTotalShopped[i]}}
+                                            </div>
+                                        </div>
+                                    <div class="col-7 float-left p-0 boxBg">
+                                        <div class="bar-width" *ngIf="InstoreTotalShopped[i]"
+                                            [style.width.%]="InstoreTotalShopped[i]">
+
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="baseCount">Base: {{TotalInstoreShoppedBase[i]}}</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right pos-rel"><label> Total Online(net) </label></td>
+                            <td class="text-center" *ngFor="let bought of OnlineTotalBought; let i = index;">
+                                <div class="col-6 float-left p-0 base">
+                                        <div class="col-5 float-left pos-rel">
+                                                <div class="bar-score">{{bought==='NaN'?'NA':bought}}</div>
+                                            </div>
+                                    <div class="col-7 float-left p-0 boxBg">
+                                        <div class="bar-width" [style.width.%]="(bought)">
+
+                                        </div>
+                                    </div>
+                                   
+                                    <div class="baseCount">Base: {{TotalOnlineBoughtBase[i]}}</div>
+                                </div>
+                                <div class="col-6 float-left p-0 base">
+                                    <div class="col-5 float-left pos-rel">
+                                        <div class="bar-score" *ngIf="OnlineTotalShopped[i]">
+                                                {{OnlineTotalShopped[i]==='NaN'?'NA':OnlineTotalShopped[i]}}
+                                        </div>
+                                    </div>
+                                    <div class="col-7 float-left p-0 boxBg">
+                                        <div class="bar-width" *ngIf="OnlineTotalShopped[i]"
+                                            [style.width.%]="(OnlineTotalShopped[i])"></div>
+                                    </div>
+                                    
+                                    <div class="baseCount">Base: {{TotalOnlineShoppedBase[i]}}</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngFor="let total of TotalBought; let i = index;">
+                            <td class="text-right pos-rel"><label>{{total.sereiesNameTotal}}</label></td>
+                            <td class="text-center" *ngFor="let bought of total.sereiseDataTotal; let j = index;">
+                                <div class="col-6 float-left p-0 base">
+                                        <div class="col-5 float-left pos-rel">
+                                                <div class="bar-score">{{bought==='NaN'?'NA':bought}}</div>
+                                            </div>
+                                    <div class="col-7 float-left p-0 boxBg">
+                                        <div class="bar-width" [style.width.%]="bought"></div>
+                                    </div>
+                                   
+                                    <div class="baseCount">Base: {{total.totalBoughtBase[j]}}</div>
+                                </div>
+                                <div class="col-6 float-left p-0 base">
+                                    <div class="col-5 float-left pos-rel">
+                                        <div class="bar-score" *ngIf="TotalShopped[i]">
+                                        {{TotalShopped[i].sereiseDataTotalShopped[j]==='NaN'?'NA':TotalShopped[i].sereiseDataTotalShopped[j]}}
+                                    </div>
+                                    </div>
+                                    <div class="col-7 float-left p-0 boxBg">
+                                        <div class="bar-width" *ngIf="TotalShopped[i]"
+                                            [style.width.%]="TotalShopped[i].sereiseDataTotalShopped[j]">
+
+                                        </div>
+                                    </div>
+                                    <div class="baseCount" *ngIf="TotalShopped[i]">Base: {{TotalShopped[i].totalShoppedBase[j]}}</div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <table *ngIf="ShowData === 'Instore'" class="table table-bordered brandHealth w-100 table-fixed mt-2">
+                        <!-- <tr class="brandList">
+                            <td></td>
+                            <td *ngFor="let brand of brandList"><img src="{{brand}}" /></td>
+                        </tr> -->
+                        <tr>
+                            <td></td>
+                            <td *ngFor="let brand of brandList">
+                                <div class="col-6 float-left p-0 text-center">
+                                    Bought
+                                </div>
+                                <div class="col-6 float-right p-0 text-center">
+                                    Shopped
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right pos-rel"><label> Total In Store(net) </label></td>
+                            <td class="text-center" *ngFor="let bought of InstoreTotalBought; let i = index;">
+                                <div class="col-6 float-left p-0 base">
+                                        <div class="col-5 float-left pos-rel">
+                                                <div class="bar-score">{{bought==='NaN'?'NA':bought}}</div>
+                                            </div>
+                                    <div class="col-7 float-left p-0 boxBg">
+                                        <div class="bar-width" [style.width.%]="(bought)"></div>
+                                    </div>
+                                   
+                                    <div class="baseCount">Base: {{TotalInstoreBoughtBase[i]}}</div>
+                                </div>
+                                <div class="col-6 float-left p-0 base">
+                                        <div class="col-5 float-left pos-rel">
+                                            <div class="bar-score" *ngIf="InstoreTotalShopped[i]">
+                                                {{InstoreTotalShopped[i]==='NaN'?'NA':InstoreTotalShopped[i]}}
+                                            </div>
+                                        </div>
+                                    <div class="col-7 float-left p-0 boxBg">
+                                        <div class="bar-width" *ngIf="InstoreTotalShopped[i]"
+                                            [style.width.%]="InstoreTotalShopped[i]">
+
+                                        </div>
+                                    </div>
+                                   
+                                    <div class="baseCount">Base: {{TotalInstoreShoppedBase[i]}}</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngFor="let instore of InstoreBought; let i = index;">
+                            <td class="text-right pos-rel"><label>{{instore.sereiesNameInstoreBought}}</label></td>
+                            <td class="text-center"
+                                *ngFor="let data of instore.sereiseDataInstoreBought; let j = index;">
+                                <div class="col-6 float-left p-0 base">
+                                        <div class="col-5 float-left pos-rel">
+                                                <div class="bar-score">{{data==='NaN'?'NA':data}}</div>
+                                            </div>
+                                    <div class="col-7 float-left p-0 boxBg">
+                                        <div class="bar-width" [style.width.%]="data"> </div>
+                                    </div>
+                                   
+                                    <div class="baseCount">Base: {{instore.instoreBoughtBase[j]}}</div>
+                                </div>
+                                <div class="col-6 float-left p-0 base">
+                                        <div class="col-5 float-left pos-rel">
+                                            <div class="bar-score" *ngIf="InstoreShopped[i]">
+                                                {{InstoreShopped[i].sereiseDataInstoreShopped[j]==='NaN'?'NA':InstoreShopped[i].sereiseDataInstoreShopped[j]}}
+                                            </div>
+                                        </div>
+                                    <div class="col-7 float-left p-0 boxBg">
+                                        <div class="bar-width" *ngIf="InstoreShopped[i]"
+                                            [style.width.%]="InstoreShopped[i].sereiseDataInstoreShopped[j]">
+
+                                        </div>
+                                    </div>
+                                  
+                                    <div class="baseCount" *ngIf="InstoreShopped[i]">Base:
+                                        {{InstoreShopped[i].instoreShoppedBase[j]}}</div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <table *ngIf="ShowData === 'Online'" class="table table-bordered brandHealth w-100 table-fixed mt-2">
+                        <!-- <tr class="brandList">
+                            <td></td>
+                            <td *ngFor="let brand of brandList"><img src="{{brand}}" /></td>
+                        </tr> -->
+                        <tr>
+                            <td></td>
+                            <td *ngFor="let brand of brandList">
+                                <div class="col-6 float-left p-0 text-center">
+                                    Bought
+                                </div>
+                                <div class="col-6 float-right p-0 text-center">
+                                    Shopped
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right pos-rel"><label> Total Online(net) </label></td>
+                            <td class="text-center" *ngFor="let bought of OnlineTotalBought; let i = index;">
+                                <div class="col-6 float-left p-0 base">
+                                        <div class="col-5 float-left pos-rel">
+                                                <div class="bar-score">{{bought==='NaN'?'NA':bought}}</div>
+                                            </div>
+                                    <div class="col-7 float-left p-0 boxBg">
+                                        <div class="bar-width" [style.width.%]="(bought)"></div>
+                                    </div>
+                                  
+                                    <div class="baseCount">Base: {{TotalOnlineBoughtBase[i]}}</div>
+                                </div>
+                                <div class="col-6 float-left p-0 base">
+                                    <div class="col-5 float-left pos-rel">
+                                        <div class="bar-score" *ngIf="OnlineTotalShopped[i]">
+                                                {{OnlineTotalShopped[i]==='NaN'?'NA':OnlineTotalShopped[i]}}
+                                        </div>
+                                    </div>
+                                    <div class="col-7 float-left p-0 boxBg">
+                                        <div class="bar-width" *ngIf="OnlineTotalShopped[i]"
+                                            [style.width.%]="(OnlineTotalShopped[i])"></div>
+                                    </div>
+                                   
+                                    <div class="baseCount">Base: {{TotalOnlineShoppedBase[i]}}</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngFor="let online of OnlineBought; let i = index;">
+                            <td class="text-right pos-rel"><label>{{online.sereiesNameOnlineBought}}</label></td>
+                            <td class="text-center"
+                                *ngFor="let onlineData of online.sereiseDataOnlineBought; let j = index;">
+                                <div class="col-6 float-left p-0 base">
+                                        <div class="col-5 float-left pos-rel">
+                                            <div class="bar-score">{{onlineData==='NaN'?'NA':onlineData}}</div>
+                                        </div>
+                                    <div class="col-7 float-left p-0 boxBg">
+                                        <div class="bar-width" [style.width.%]="onlineData"></div>
+                                    </div>
+                                    
+                                    <div class="baseCount">Base: {{online.onlineBoughtBase[j]}}</div>
+                                </div>
+                                <div class="col-6 float-left p-0 base">
+                                        <div class="col-5 float-left pos-rel">
+                                            <div class="bar-score" *ngIf="OnlineShopped[i]">
+                                                {{OnlineShopped[i].sereiseDataOnlineShopped[j]==='NaN'?'NA':OnlineShopped[i].sereiseDataOnlineShopped[j]}}
+                                            </div>
+                                        </div>
+                                    <div class="col-7 float-left p-0 boxBg">
+                                        <div class="bar-width" *ngIf="OnlineShopped[i]"
+                                            [style.width.%]="OnlineShopped[i].sereiseDataOnlineShopped[j]">
+
+                                        </div>
+                                    </div>
+                                   
+                                    <div class="baseCount" *ngIf="OnlineShopped[i]">Base:
+                                        {{OnlineShopped[i].onlineShoppedBase[j]}}</div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div id="tab5" class="hide border" [class.activeTab]="viewMode == 'tab5'">
+                <table class="table  border-0 table-fixed w-100 legendtable table-no-border text-center mb-2 mt-2" style="font-size: .85rem;">
+                    <tr>
+                        <td>Indexed to Overall Market Average</td>
+                        <td> <span style="background-color: #92D050" class="legend-box mr-1"></span><span> Overindex: 120 or higher</span></td>
+                        <td> <span style="background-color: #E5F995" class="legend-box mr-1"></span><span>Overindex: 110 - 119</span></td>
+                        <td> <span style="background-color: #ffffff" class="legend-box mr-1 border"></span><span>Average: 91 - 109</span></td>
+                        <td> <span style="background-color: #FFCCCE" class="legend-box mr-1"></span><span>Underindex: 81 - 90</span></td>
+                        <td> <span style="background-color: #FF656D" class="legend-box mr-1"></span><span>Underindex: 80 or lower</span></td>
+                    </tr>
+                </table>
+                <table id="brandHeader" [style.width.px]="getContentWidth()" class="table table-bordered brandHealth table-fixed mt-2 mb-0">
+                    <tr class="brandList">
+                        <td  style="width:200px!important"></td>
+                        <td> Overall Market Average</td>
+                        <td *ngFor="let brand of brandList"><img src="{{brand}}" /></td>
+                    </tr>
+                </table>
+                <div class="overflow" [style.height.px]="getContentHeight()">
+                    <table id="brandData" class="table table-bordered brandHealth w-100 table-fixed mt-0">
+                        <tr *ngFor="let val of reasonfForBrandChoiceArray; let i = index;">
+                            <td class="text-right pos-rel" style="width:200px!important"><label>{{val.sereiseName}}</label></td>
+                            <td class="text-center">{{val.average}}</td>
+                            <td class="text-center base" *ngFor="let data of val.seriesdata; let i = index;"
+                                [style.backgroundColor]="val.seriesColor[i]">{{data==='NaN'?'NA':data}}
+                                <div class="baseCount">Base: {{ReasonForChoiceBase[i]}}</div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="col-12 p-0">
+                Trended View
+            </div> -->
+    <div class="clearfix"></div>
+
+</div>

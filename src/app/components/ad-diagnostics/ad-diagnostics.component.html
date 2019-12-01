@@ -1,0 +1,253 @@
+<div class="col-md-12 float-left  mt-5 pt-4 pb-4">
+    <app-loader [show]="showLoader"></app-loader>
+    <app-filter-chip-list></app-filter-chip-list>
+    <h3 *ngIf="selectedTab=='Diagnostics'" class="mt-2 mb-2 float-left col-5 pt-1 pos-rel"
+    style="font-size: 24px;color:#29a84a">Ad Diagnostics  </h3>
+<h3 *ngIf="selectedTab=='CallToAction'" class="mt-2 mb-2 float-left col-5 pt-1 pos-rel"
+    style="font-size: 24px;color:#29a84a">Ad Call to Action </h3>
+    <h3 *ngIf="selectedTab=='Recall'" class="mt-2 mb-2 float-left col-5 pt-1 pos-rel"
+    style="font-size: 24px;color:#29a84a">Ad Recall </h3>
+
+    <app-chart-container [chart]="adDiagnosticTotalAverageChart" [updateData]="onDataUpdate" style="display: none">
+    </app-chart-container>
+    <app-chart-container [chart]="adDiagnosticChartForAllBrands" [updateData]="onDataUpdate" style="display: none">
+    </app-chart-container>
+    <app-chart-container [chart]="adCallToActionTotalAverageChart" [updateData]="onDataUpdate" style="display: none">
+    </app-chart-container>
+    <app-chart-container [chart]="adCallToActionChartAllBrands" [updateData]="onDataUpdate" style="display: none">
+    </app-chart-container>
+    <div class="float-right mt-1">  
+        <!-- <span class="mr-4"><i class="fa fa-caret-up text-success mr-2 fa-2x"></i> <i
+                            class="fa-2x fa fa-caret-down text-danger mr-2"></i><span>Significant @ 95% level</span></span><i
+                        class="fa fa-line-chart font-sm border rounded p-2 clickable" hidden title="Switch to Trended View"></i> -->
+        <div class="float-right">
+            <img src="../../../assets/images/excel.png" title="Download Excel" (click)="downloadExcelFile();" class="mr-2 clickable"
+                style="height:20px;" />
+            <!-- <img src="../../../assets/images/ppt.png" title="Download PPT" class="clickable" style="height:20px;" /> -->
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="col-12 overflow">
+        <nav class="nav nav-pills border nav-justified">
+            <a class="nav-item nav-link active clickable border-right" [class.active]="viewMode == 'tab1'" rel="tab1"
+                (click)="changeTable('Diagnostics','tab1')">
+                Ad Diagnostics
+            </a>
+            <a class="nav-item nav-link clickable border-right" [class.active]="viewMode == 'tab2'" rel="tab2"
+                (click)="changeTable('CallToAction','tab2')">
+                Ad Call to Action
+            </a>
+            <a class="nav-item nav-link clickable border-right" [class.active]="viewMode == 'tab3'" rel="tab3"
+                (click)="changeTable('Recall','tab3')">
+                Ad Recall
+            </a>
+        </nav>
+        <div class="tab-content" id="myTabContent">
+            <div id="tab1" class="hide active" [class.active]="viewMode == 'tab1'">
+                <div class="card-body pt-2 mb-3 pl-0 mt-3">
+                    <div style="font-size: .85rem;">
+                        <div class="col-2 float-left pr-0 font-weight-bold pl-0">Index vs. Category Norms</div>
+                        <div class="col-2 float-left pr-0">
+                            <div style="background-color: #92D050" class="legend-box float-left mr-2"></div><span>
+                                Overindex: 120 or higher</span>
+                        </div>
+                        <div class="col-2 float-left">
+                            <div style="background-color: #E5F995" class="legend-box float-left mr-2"></div>
+                            <span>Overindex: 110 - 119</span>
+                        </div>
+                        <div class="col-2 float-left">
+                            <div style="background-color: #fff" class="legend-box float-left mr-2 border"></div>
+                            <span>Average: 91 - 109</span>
+                        </div>
+                        <div class="col-2 float-left">
+                            <div style="background-color: #FFCCCE" class="legend-box float-left mr-2"></div>
+                            <span>Underindex: 81 - 90</span>
+                        </div>
+                        <div class="col-2 float-left pr-0">
+                            <div style="background-color: #FF656D" class="legend-box float-left mr-2"></div>
+                            <span>Underindex: 80 or lower</span>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-bordered w-100 mt-2">
+                    <tr style="background-color: #fafafa;">
+                        <td colspan="2" class="text-center"></td>
+                        <td colspan="3" class="text-center"><label>Engaging</label></td>
+                        <td colspan="2" class="text-center"><label>Persuasive</label></td>
+                        <td colspan="4" class="text-center"><label>Informative</label></td>
+                        <td colspan="2" class="text-center"><label>Unique</label></td>
+                    </tr>
+                    <tr class="text-center">
+                        <td colspan="2" class=""></td>
+                        <td>Enjoyment</td>
+                        <td>See Again</td>
+                        <td>Tired of Seeing*</td>
+                        <td>More likely to buy</td>
+                        <td>More Appealing</td>
+                        <td>Important Info</td>
+                        <td>New News</td>
+                        <td>Believable</td>
+                        <td>Easy to understand</td>
+                        <td>Original</td>
+                        <td>Different</td>
+                    </tr>
+                    <tr class="text-center">
+                        <td colspan="2" class="text-center"><label>Average(All Ads)</label></td>
+                        <td *ngFor="let avg of adDiagnosticTotalAverage">{{avg}}</td>
+                    </tr>
+                    <tr class="text-center">
+                        <td colspan="2" class="text-center"><label>Average(Selected Ads)</label></td>
+                        <td *ngFor="let avg of adDiagnosticAverageArray">{{avg}}</td>
+                    </tr>
+                    <tr *ngFor="let row of adDiagnosticTableDelta, let i = index;">
+                        <td *ngIf="i == 0" [attr.rowspan]="i==0?adDiagnosticTableDelta.length:''" class="brandList" ><img src="{{brandList[0]}}"></td>
+                        <td class="text-right">
+                            <a  class="clickable link" routerLink="/home/AdDetails/{{row.url}}">{{row.serieseName}}</a>
+                        </td>
+                        <td class="text-center base" *ngFor="let col of row.serieseData; let j = index;" [style.backgroundColor]="row.serieseColor[j]"  [ngClass]="{'text-white' :row.serieseColor[j] !== '#fff' && row.serieseColor[j] !== '#FFCCCE' && row.serieseColor[j] !== '#E5F995' }">{{col}}
+                            <div class="baseCount">Base: {{row.seriesBase[0]}}</div>
+                        </td>
+                    </tr>
+                    <tr *ngFor="let row of adDiagnosticTableMoen, let i = index;">
+                        <td *ngIf="i == 0" [attr.rowspan]="i==0?adDiagnosticTableMoen.length:''" class="brandList" ><img src="{{brandList[1]}}"></td>
+                        <td class="text-right">
+                            <a  class="clickable link" routerLink="/home/AdDetails/{{row.url}}">{{row.serieseName}}</a>
+                        </td>
+                        <td class="text-center base" *ngFor="let col of row.serieseData; let j = index;" [style.backgroundColor]="row.serieseColor[j]"  [ngClass]="{'text-white' :row.serieseColor[j] !== '#fff' && row.serieseColor[j] !== '#FFCCCE' && row.serieseColor[j] !== '#E5F995' }">{{col}}
+                            <div class="baseCount">Base: {{row.seriesBase[0]}}</div>
+                        </td>
+                    </tr>
+                    <tr *ngFor="let row of adDiagnosticTableKohler, let i = index;">
+                        <td *ngIf="i == 0" [attr.rowspan]="i==0?adDiagnosticTableKohler.length:''" class="brandList" ><img src="{{brandList[2]}}"></td>
+                        <td class="text-right">
+                            <a  class="clickable link" routerLink="/home/AdDetails/{{row.url}}">{{row.serieseName}}</a>
+                        </td>
+                        <td class="text-center base" *ngFor="let col of row.serieseData;let j = index;" [style.backgroundColor]="row.serieseColor[j]" [ngClass]="{'text-white' :row.serieseColor[j] !== '#fff' && row.serieseColor[j] !== '#FFCCCE' && row.serieseColor[j] !== '#E5F995' }">{{col}}
+                            <div class="baseCount">Base: {{row.seriesBase[0]}}</div>
+                        </td>
+                    </tr>
+                    <tr *ngFor="let row of adDiagnosticTableAmerican, let i = index;">
+                        <td *ngIf="i == 0" [attr.rowspan]="i==0?adDiagnosticTableAmerican.length:''" class="brandList" ><img src="{{brandList[3]}}"></td>
+                        <td class="text-right">
+                            <a  class="clickable link" routerLink="/home/AdDetails/{{row.url}}">{{row.serieseName}}</a>
+                        </td>
+                        <td class="text-center base" *ngFor="let col of row.serieseData;let j = index;" [style.backgroundColor]="row.serieseColor[j]" [ngClass]="{'text-white' :row.serieseColor[j] !== '#fff' && row.serieseColor[j] !== '#FFCCCE' && row.serieseColor[j] !== '#E5F995' }">{{col}}
+                            <div class="baseCount">Base: {{row.seriesBase[0]}}</div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="tab2" class="hide" [class.active]="viewMode == 'tab2'">
+                <div class="card-body pt-2 mb-3 pl-0 mt-3">
+                    <div style="font-size: .85rem;">
+                        <div class="col-2 float-left pr-0 font-weight-bold pl-0">Index vs. Category Norms</div>
+                        <div class="col-2 float-left pr-0">
+                            <div style="background-color: #92D050" class="legend-box float-left mr-2"></div><span>
+                                Overindex: 120 or higher</span>
+                        </div>
+                        <div class="col-2 float-left">
+                            <div style="background-color: #E5F995" class="legend-box float-left mr-2"></div>
+                            <span>Overindex: 110 - 119</span>
+                        </div>
+                        <div class="col-2 float-left">
+                            <div style="background-color: #fff" class="legend-box float-left mr-2 border"></div>
+                            <span>Average: 91 - 109</span>
+                        </div>
+                        <div class="col-2 float-left">
+                            <div style="background-color: #FFCCCE" class="legend-box float-left mr-2"></div>
+                            <span>Underindex: 81 - 90</span>
+                        </div>
+                        <div class="col-2 float-left pr-0">
+                            <div style="background-color: #FF656D" class="legend-box float-left mr-2"></div>
+                            <span>Underindex: 80 or lower</span>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-bordered w-100 mt-2">
+                    <tr  style="background-color: #fafafa;">
+                        <td colspan="2" class="text-center"></td>
+                        <td colspan="" class="text-center"></td>
+                        <td colspan="5" class="text-center"><label>Get More Info</label></td>
+                        <td colspan="4" class="text-center"><label>Share Info</label></td>
+                    </tr>
+                    <tr class="text-center">
+                        <td colspan="2" class="text-center"></td>
+                        <td>Take Some Action(net)</td>
+                        <td>Look in-store</td>
+                        <td>Visit Brand Website</td>
+                        <td>Search Online</td>
+                        <td>Click Ad</td>
+                        <td>More Info</td>
+                        <td>Talk with Freinds/Family</td>
+                        <td>Recommended to Freinds/Family</td>
+                        <td>Talk on Social Media</td>
+                        <td>Write Blog Entry</td>
+                    </tr>
+                    <tr class="text-center">
+                        <td colspan="2" class="text-center"><label>Average(All Ads)</label></td>
+                        <td>{{totalaverageOfRow}}</td>
+                        <td *ngFor="let avg of adCallToActionTotalAverage">{{avg}}</td>
+                    </tr>
+                    <tr class="text-center">
+                        <td colspan="2" class="text-center"><label>Average(Selected Ads)</label></td>
+                        <td>{{netActionAverage}}</td>
+                        <td *ngFor="let avg of adCallActionColAverageArray">{{avg}}</td>
+                    </tr>
+                    <tr *ngFor="let row of adCallToActionTableDelta, let i = index;">
+                        <td *ngIf="i == 0" [attr.rowspan]="i==0?adCallToActionTableDelta.length:''" class="brandList" ><img src="{{brandList[0]}}"></td>
+                        <td class="text-right">
+                            <a  class="clickable link" routerLink="/home/AdDetails/{{row.url}}">{{row.serieseName}}</a>
+                        </td>
+                        <td class="text-center">{{adCallActionRowAverageArray[0+i]}}</td>
+                        <td class="text-center base" *ngFor="let col of row.serieseData; let j = index;" [style.backgroundColor]="row.serieseColor[j]" [ngClass]="{'text-white' :row.serieseColor[j] !== '#fff' && row.serieseColor[j] !== '#FFCCCE' && row.serieseColor[j] !== '#E5F995' }">{{col}}
+                            <div class="baseCount">Base: {{row.seriesBase[0]}}</div>
+                        </td>
+                    </tr>
+                    <tr *ngFor="let row of adCallToActionTableMoen, let i = index;">
+                        <td *ngIf="i == 0" [attr.rowspan]="i==0?adCallToActionTableMoen.length:''" class="brandList" ><img src="{{brandList[1]}}"></td>
+                        <td class="text-right">
+                            <a  class="clickable link" routerLink="/home/AdDetails/{{row.url}}">{{row.serieseName}}</a>
+                        </td>
+                        <td class="text-center">{{adCallActionRowAverageArray[4+i]}}</td>
+                        <td class="text-center base" *ngFor="let col of row.serieseData; let j = index;" [style.backgroundColor]="row.serieseColor[j]" [ngClass]="{'text-white' :row.serieseColor[j] !== '#fff' && row.serieseColor[j] !== '#FFCCCE' && row.serieseColor[j] !== '#E5F995' }">{{col}}
+                            <div class="baseCount">Base: {{row.seriesBase[0]}}</div>
+                        </td>
+                    </tr>
+                    <tr *ngFor="let row of adCallToActionTableKohler, let i = index;">
+                        <td *ngIf="i == 0" [attr.rowspan]="i==0?adCallToActionTableKohler.length:''" class="brandList" ><img src="{{brandList[2]}}"></td>
+                        <td class="text-right">
+                            <a  class="clickable link" routerLink="/home/AdDetails/{{row.url}}">{{row.serieseName}}</a>
+                        </td>
+                        <td class="text-center">{{adCallActionRowAverageArray[9+i]}}</td>
+                        <td class="text-center base" *ngFor="let col of row.serieseData;let j = index;" [style.backgroundColor]="row.serieseColor[j]" [ngClass]="{'text-white' :row.serieseColor[j] !== '#fff' && row.serieseColor[j] !== '#FFCCCE' && row.serieseColor[j] !== '#E5F995' }">{{col}}
+                            <div class="baseCount">Base: {{row.seriesBase[0]}}</div>
+                        </td>
+                    </tr>
+                    <tr *ngFor="let row of adCallToActionTableAmerican, let i = index;">
+                        <td *ngIf="i == 0" [attr.rowspan]="i==0?adCallToActionTableAmerican.length:''" class="brandList" ><img src="{{brandList[3]}}"></td>
+                        <td class="text-right">
+                            <a  class="clickable link" routerLink="/home/AdDetails/{{row.url}}">{{row.serieseName}}</a>
+                        </td>
+                        <td class="text-center">{{adCallActionRowAverageArray[12+i]}}</td>
+                        <td class="text-center base" *ngFor="let col of row.serieseData;let j = index;" [style.backgroundColor]="row.serieseColor[j]" [ngClass]="{'text-white' :row.serieseColor[j] !== '#fff' && row.serieseColor[j] !== '#FFCCCE' && row.serieseColor[j] !== '#E5F995' }">{{col}}
+                            <div class="baseCount">Base: {{row.seriesBase[0]}}</div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="tab3" class="hide" [class.active]="viewMode == 'tab3'">
+               <div class="card">
+                   <div class="green font-weight-normal mb-2 mt-2">AD RECALL AND BRAND ATTRIBUTION</div>
+                   <app-chart-container *ngFor="let config of adrecalAndBrandingArray" [chart]="config" [updateData]="onDataUpdate"></app-chart-container>
+                   <!-- <app-chart-container [chart]="adRecallDataChart" [updateData]="onDataUpdate"></app-chart-container> -->
+               </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- <div class="col-12 p-0">
+                    Trended View
+                </div> -->
+    <div class="clearfix"></div>
+   
+</div>

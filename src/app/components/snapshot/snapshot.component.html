@@ -1,0 +1,289 @@
+<div class="col-md-12 float-left mt-5 pt-4">
+    <app-loader [show]="showLoader"></app-loader>
+    <app-filter-chip-list></app-filter-chip-list>
+    <h4 class="mt-2 mb-2 float-left col-4 pt-3 pr-0" style="font-size: 22px;color:#29a84a">Category Snapshot -
+        {{Category}}
+        <!-- <br> Brand - {{brandname}} -->
+    </h4>
+    <app-chart-container [chart]="brandImagery" [updateData]="onDataUpdate" style="display: none"></app-chart-container>
+    <app-chart-container [chart]="Unaided" [updateData]="onDataUpdate" style="display: none"></app-chart-container>
+    <app-chart-container [chart]="TotalBrand" [updateData]="onDataUpdate" style="display: none"></app-chart-container>
+    <app-chart-container [chart]="Consideration" [updateData]="onDataUpdate" style="display: none">
+    </app-chart-container>
+    <app-chart-container [chart]="Equity" [updateData]="onDataUpdate" style="display: none"></app-chart-container>
+    <app-chart-container [chart]="Strong" [updateData]="onDataUpdate" style="display: none"></app-chart-container>
+    <div class="float-left col-8 overflow pl-0 pr-1">
+        <div style="color:#29a84a" class="font-sm float-left">Select your brand</div>
+        <div class="text-right float-right" hidden> <i class="fa fa-caret-up text-success mr-1 fa-2x"></i>/ <i
+                class="fa-2x fa fa-caret-down text-danger mr-2"></i><span>Significant @ 95% level</span></div>
+        <div class="clearfix"></div>
+        <!-- <div style="height: 500px;width: 600px;">
+            <app-chart-container [chart]="unaidedTrend" [updateData]="onDataUpdate"></app-chart-container>
+        </div> -->
+        <table class="w-100 brandList mb-3 clickable">
+            <tr>
+                <td id="Delta" (click)="toggle($event,'Delta',3)" class="icon selected">
+                    <div class="box">
+                        <img src="../../../assets/images/BrandIcons/Delta_logo_400x136.png" />
+                        <i class="fa fa-check"></i>
+                    </div>
+                </td>
+                <td id="Moen" (click)="toggle($event,'Moen',3)" class="icon">
+                    <div class="box"><img src="../../../assets/images/BrandIcons/Moen_logo_sm.png" />
+                        <i class="fa fa-check"></i></div>
+                </td>
+                <td id="Kohler" (click)="toggle($event,'Kohler',3)" class="icon">
+                    <div class="box"><img src="../../../assets/images/BrandIcons/Kohler_logo-620x240.png" />
+                        <i class="fa fa-check"></i></div>
+                </td>
+                <td id="Peerless" (click)="toggle($event,'Peerless',3)" class="icon">
+                    <div class="box"><img src="../../../assets/images/BrandIcons/Peerless_logo_white_280x90.png" />
+                        <i class="fa fa-check"></i></div>
+                </td>
+                <td id="American" (click)="toggle($event,'American',3)" class="icon">
+                    <div class="box"><img src="../../../assets/images/BrandIcons/American_Standard_logo_300x128.png" />
+                        <i class="fa fa-check"></i></div>
+                </td>
+                <td id="Pfister" *ngIf="Category!=='TubShowerUnit'" (click)="toggle($event,'Pfister',3)" class="icon">
+                    <div class="box"><img src="../../../assets/images/BrandIcons/Pfister_logo_sm.png" />
+                        <i class="fa fa-check"></i></div>
+                </td>
+                <td id="Waterpik" *ngIf="Category==='Showerhead'" (click)="toggle($event,'Waterpik',3)" class="icon">
+                    <div class="box"><img src="../../../assets/images/BrandIcons/Waterpik_logo_765x244.png" />
+                        <i class="fa fa-check"></i></div>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+    <div class="clearfix"></div>
+    <div class="col-4 float-left border-right p-1 pl-3">
+        <div class="col-md-12 float-left p-1 border-top-0 border-bottom-0">
+            <div class="card" style="margin-bottom: 0;">
+                <div class="card-header green font-weight-bold font-sm pt-0 pos-rel">AWARENESS METRICS (%)<i
+                        class="font-xs ml-2 text-dark">Base: Total</i>
+                    <div class="titleOnHover"><b>Unaided Brand</b> : SBAW, <b>Total Brand</b> : SBAW/ABAW </div>
+                    <div class="float-right">
+                        <img src="../../../assets/images/excel.png" title="Download Excel"
+                            (click)="downloadAwarenesCSV()" class="mr-2 clickable" style="height:20px;" />
+                        <!-- <img src="../../../assets/images/ppt.png" title="Download PPT" class="clickable"
+                            style="height:20px;" /> -->
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="card-body pt-1 pl-0" style=" padding-bottom: 0;">
+                    <table class="w-100 table table-bordered">
+                        <tr>
+                            <td>Unaided Brand</td>
+                            <td class="pos-rel base" style="width:50%;">
+                                    <div class="pos-rel col-3 float-left">
+                                            <div class="bar-score" *ngIf="UnaidedScore!=null">{{UnaidedScore}}</div>
+                                        </div>
+                                        <div class="barBox pos-rel col-9 float-left p-0">
+                                                <div class="bar-width" [style.width.%]="UnaidedScore"></div>                
+                                            
+                                        </div>
+                                        <div class="baseCount" *ngIf="UnaidedBase!=null">Base: {{UnaidedBase}}</div>
+                                
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Total Brand (Unaided + Aided)</td>
+                            <td class="pos-rel base">
+                                    <div class="pos-rel col-3 float-left">
+                                            <div class="bar-score" *ngIf="TotalScore!=null">{{TotalScore}}</div>
+                                        </div>
+                                        <div class="barBox pos-rel col-9 float-left p-0">
+                                                <div class="bar-width" [style.width.%]="TotalScore"></div>               
+                                            
+                                        </div>
+                                        <div class="baseCount">Base: {{Totalbase}}</div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 float-left p-1 border-0">
+            <div class="card">
+                <div class="card-header green font-weight-bold font-sm">BRAND EQUITY (%)<i class="font-xs ml-2 text-dark">Base: Total</i>
+                    <div class="titleOnHover"><b>Brand Equity</b>: CBR/CON </div>
+                    <div class="float-right">
+                        <img src="../../../assets/images/excel.png" title="Download Excel" (click)="downloadEquityCSV()"
+                            class="mr-2 clickable" style="height:20px;" />
+                        <!-- <img src="../../../assets/images/ppt.png" title="Download PPT" class="clickable"
+                            style="height:20px;" /> -->
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="card-body pt-0">
+                    <table class="w-100">
+                        <tr>
+                            <td style="vertical-align: middle;width:47%" class="col-6 p-0">
+                                <div class="font-weight-normal font-sm">Strong Relationship </div>
+                            </td>
+                            <td class="pos-rel base text-left">
+                                <span *ngIf="strongScore!=null" class="font-sm pl-1"
+                                    style="width:100px;margin: 0 auto">{{strongScore}}</span>
+                                <div class="baseCount" *ngIf="StrongBase!=null">Base: {{StrongBase}}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="text-center p-0 pos-rel pt-3 equity">
+                                <div style="width:100px;height:130px;margin: 0 auto;margin-bottom: 5px;padding-bottom:0px!important;" *ngIf="Latent!=null && Active!=null" class="p-0 pb-0">
+                                    <div></div>
+                                    <div style="width:100%;height:65%;background-color: #669900" [style.height.%]="Active" *ngIf="Active!=null" class="text-white text-center pos-rel base">
+                                        <div class="considerationScore" [ngStyle]="{'top':Active > 100 ? '4%' : '-15px' ,'color':Active > 100 ? 'white' : '#868585'}">{{Active}}</div>
+                                        <div class="baseCount" *ngIf="StrongBase!=null">Base: {{equitybase[0]}}</div>
+                                    </div>
+                                    <div style="width:120%;height:1%;background-color: #4d4d4d;margin-left: -10%" class="text-white text-center"></div>
+                                    <div style="width:100%;height:25%;background-color: #CCCC00" [style.height.%]="Latent" *ngIf="Latent!=null" class="text-white text-center pos-rel base">
+                                        <div class="considerationScore" [ngStyle]="{'top':Latent > 100 ? 102 +'%' : '102%' ,'color':Latent > 100 ? 'white' : '#868585'}">{{Latent}}</div>
+                                    </div>
+                                    <div style="width:100%;height:25%;background-color: #fff" [style.height.%]="100-Active-Latent" class="text-center base">
+                                        <!-- <span *ngIf="strongScore!=null" class="font-sm" 
+                                            style="width:100px;margin: 0 auto">{{strongScore}}</span>
+                                        <div class="baseCount" *ngIf="StrongBase!=null">Base: {{StrongBase}}</div> -->
+                                    </div>
+                                    <div hidden style="width:100%;height:10%;background-color: #fafafa" class="text-center font-md">29<i class="fa fa-caret-up ml-2"></i></div>
+                                </div>
+                                <div class="alert alert-info font-sm" *ngIf="Latent==null || Active==null">No Data Available</div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="card-body pt-3">
+                    <div>
+                        <div class="col-1 float-left"></div>
+                        <div class="col-5 float-left" title="Strong Relationship and Consider 1st/2nd">
+                            <div style="background-color: #669900" class="legend-box float-left mr-2 mt-1"></div>
+                            <span>Active</span>
+                        </div>
+                        <div class="col-5 float-left" title="Strong Relationship and Also/Not Consider">
+                            <div style="background-color: #CCCC00" class="legend-box float-left mr-2 mt-1"></div>
+                            <span>Latent</span>
+                        </div>
+                        <div class="col-1 float-left"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-8 float-left p-1">
+        <div class="col-5 float-left p-1 border-0">
+            <!-- work in progress -->
+            <div class="card">
+                <div class="card-header green pt-0 font-weight-bold font-sm">CONSIDERATION (%) <i
+                        class="font-xs ml-2 text-dark">Base: Total</i>
+                    <div class="titleOnHover"><b>Consideration</b> : CON </div>
+                    <div class="float-right">
+                        <img src="../../../assets/images/excel.png" title="Download Excel"
+                            (click)="downloadConsiderationCSV()" class="mr-2 clickable" style="height:20px;" />
+                        <!-- <button (click)="downloadConsiderationCSV()" class="btn-default">Download CSV</button> -->
+                        <!-- <img src="../../../assets/images/ppt.png" title="Download PPT" class="clickable"
+                            style="height:20px;" /> -->
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="card-body pt-1">
+                    <table class="w-100">
+                        <tr>
+                            <td style="vertical-align: middle;width:40%" class="text-center">
+                                <div class="font-weight-normal font-sm">1st/2nd Choice (net) </div>
+                            </td>
+                            <td class="text-left pos-rel base" *ngIf="Choices!=null">
+                                <span class="font-sm pl-5">{{Choices}}</span>
+                                <div class="baseCount">Base: {{ConsiderationBases[0]}}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td class="text-left pt-0 pos-rel base pb-0">
+                                <!-- <div class="text-center pos-rel base" *ngIf="Choices!=null">
+                                    <span class="font-sm">{{Choices}}</span>
+                                    <div class="baseCount" hidden>Base: {{ConsiderationBases[0]}}</div>
+                                </div> -->
+                                <div style="width:100px;height:220px;background-color: #fff;margin: 0 auto;margin-bottom:5px;"
+                                    *ngIf="NotConsider!=null&&SecondChoice!=null&&Consider!=null&&firstChoice!=null"
+                                    class="p-0 pb-0 pt-0 ml-0 mt-4">
+                                    <div style="width:100%;height:30%;background-color: #4d4d4d" [style.height.%]="firstChoice" class="text-white text-center pos-rel">
+                                        <div class="considerationScore" [ngStyle]="{'top':firstChoice > 5 ? '40%' : '-20px' ,'color':firstChoice > 5 ? 'white' : 'black'}" *ngIf="firstChoice!=null">{{firstChoice}}</div>
+                                    </div>
+                                    <div class="baseCount">Base: {{ConsiderationBases[0]}}</div>
+                                    <div style="width:100%;height:20%;background-color: #777676" [style.height.%]="SecondChoice" class="text-white text-center pos-rel">
+                                        <div class="considerationScore" *ngIf="SecondChoice!=null">{{SecondChoice}}</div>
+
+                                    </div>
+                                    <div style="width:100%;height:40%;background-color: #969595" [style.height.%]="Consider" class="text-white text-center pos-rel">
+                                        <div class="considerationScore" *ngIf="Consider!=null">{{Consider}}</div>
+                                    </div>
+                                    <div style="width:100%;height:10%;background-color: #B8B8B8" [style.height.%]="NotConsider" class="text-white text-center pos-rel">
+                                        <div class="considerationScore" [ngStyle]="{'top':NotConsider > 5 ? '40%' : '110%'}" *ngIf="NotConsider!=null">{{NotConsider}}</div>
+                                    </div>
+                                </div>
+                                <div class="alert alert-info font-sm" *ngIf="NotConsider==null||SecondChoice==null||Consider==null||firstChoice==null">No Data Available</div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="card-body pt-0 pb-0">
+                    <div>
+                        <div class="col-12 float-left">
+                            <div style="background-color: #4d4d4d" class="legend-box  float-left mr-2 "></div><span>First Choice</span>
+                        </div>
+                        <div class="col-12 float-left">
+                            <div style="background-color: #969595" class="legend-box float-left mr-2"></div><span>Consider</span>
+                        </div>
+                        <div class="col-12 float-left">
+                            <div style="background-color: #777676" class="legend-box float-left mr-2"></div><span>Second Choice</span>
+                        </div>
+                        <div class="col-12 float-left">
+                            <div style="background-color: #B8B8B8" class="legend-box float-left mr-2"></div><span>Not Consider</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-7 float-left p-1 border-left pl-2">
+            <div class="card">
+                <div class="card-header green pt-0 font-weight-bold font-sm">BRAND IMAGERY (%)<i
+                        class="font-xs ml-2 text-dark">Base: Aware of brand</i>
+                    <div class="titleOnHover"><b>Brand Imagery</b> : BRIA </div>
+                    <div class="float-right">
+                        <img src="../../../assets/images/excel.png" title="Download Excel"
+                            (click)="downloadBrandImageryCSV()" class="mr-2 clickable" style="height:20px;" />
+                        <!-- <img src="../../../assets/images/ppt.png" title="Download PPT" class="clickable"
+                            style="height:20px;" /> -->
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="card-body p-1" style="overflow:auto" [style.height.px]="getContentHeight()">
+                    <div class="text-success">Drivers</div>
+                    <table class="w-100 table table-bordered">
+                        <tr *ngFor="let row of ImageryData1;let i = index">
+                            <td [style.color]="getBgColor(row.KDA)" class="text-center" style="width:60px;">
+                                {{row.KDA}}
+                            </td>
+                            <td class="text-right">
+                                {{row.sereiesname}}
+                            </td>
+                            <td class="pos-rel base" style="width:40%;">
+                                    <div class="pos-rel col-3 float-left">
+                                            <div class="bar-score">{{row.score}} </div>
+                                        </div>
+                                        <div class="barBox pos-rel col-9 float-left p-0">
+                                                <div class="bar-width" [style.width.%]="row.score"></div>                  
+                                            
+                                        </div>
+                                        <div class="baseCount">Base: {{imageryBases[i]}}</div>
+                                <!-- [ngStyle]="{'left':row.score > 0 ? '10px' : row.score+5+'%' ,'color':row.score > 20 ? 'white' : 'black'}" -->
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+
+</div>

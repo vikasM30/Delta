@@ -1,0 +1,335 @@
+<div id="nav" class="sidenav pl-2 menu">
+    <a class="closebtn clickable" (click)="close()">&times;</a>
+    <ul class="nav nav-pills">
+        <li class="nav-item col-6 pr-0">
+            <a class="nav-link active text-center border-bottom" style="border-radius: 0px;" id="brand-tab" (click)="brand('brand')" data-toggle="tab"
+                [ngClass]="{ 'active':activeTab==='brand'}">Brand</a>
+        </li>
+        <li class="nav-item col-6 pl-0">
+            <a class="nav-link text-center border-bottom" style="border-radius: 0px;" id="ad-tab" data-toggle="tab"
+                (click)="ad('ad')" [ngClass]="{ 'active':activeTab==='ad'}">Ad</a>
+        </li>
+    </ul>
+    <div class="tab-content mb-5" id="myTabContent">
+        <div class="tab-pane fade show active clickable" id="brand" [ngClass]="{ 'active':activeTab==='brand'}"
+            role="tabpanel" aria-labelledby="brand-tab">
+            <div class="panel-group">
+                <div class="panel panel-default">
+                    <div class="panel-heading clickable" (click)="Snapshot=!Snapshot">
+                        <h4 class="panel-title mb-0">
+                            <a [ngClass]="{'activeMenu': Snapshot === true}"><i class="fa fa-angle-right mr-1"></i>Brand
+                                Snapshot</a></h4>
+                    </div>
+                    <div id="collapse3" class="panel-collapse" [hidden]="!Snapshot">
+                        <div class="panel-body">
+                            <ul class="text-white pl-4 pb-1">
+                                <li id="Overallsnapshot" class="nav-item active"
+                                    (click)="highlight($event,'Overallsnapshot');close();"><a class="p-0"
+                                        routerLink="/home/Overallsnapshot">Overall Brand</a></li>
+                                <li id="Faucet" class="nav-item" (click)="highlight($event,'Faucet');close();"><a
+                                        class="p-0" routerLink="/home/Snapshot/Faucet">Faucet</a></li>
+                                <li id="Showerhead" class="nav-item" (click)="highlight($event,'Showerhead');close();">
+                                    <a class="p-0" routerLink="/home/Snapshot/Showerhead">Showerhead</a></li>
+                                <li id="Toilet" class="nav-item" (click)="highlight($event,'Toilet');close();"><a
+                                        class="p-0" routerLink="/home/Snapshot/Toilet">Toilet</a></li>
+                                <li id="Tub" class="nav-item" (click)="highlight($event,'Tub');close();"><a class="p-0"
+                                        routerLink="/home/Snapshot/TubShowerUnit">Tub /
+                                        Shower Unit</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-group">
+                <div class="panel panel-default">
+                    <div class="panel-heading clickable" (click)="Performance=!Performance">
+                        <h4 class="panel-title mb-0">
+                            <a [ngClass]="{'activeMenu': Performance === true}"><i
+                                    class="fa fa-angle-right mr-1"></i>Competitive Performance</a></h4>
+                    </div>
+                    <div id="collapse3" class="panel-collapse" [hidden]="!Performance">
+                        <div class="panel-body">
+                            <ul class="text-white pl-4 pb-1">
+                                <li id="overallPerformance"
+                                    (click)="OverallBrand=!OverallBrand;$event.stopPropagation();highlight($event,'overallPerformance')"
+                                    class="nav-item">
+                                    <a class="p-0" [ngClass]="{'activeMenu': OverallBrand === true}"><i
+                                            class="fa fa-angle-right mr-1"></i>Overall Brand</a>
+                                    <ul class="text-white pl-4 pb-1" [hidden]="!OverallBrand">
+                                        <li id="brandHealth" class="nav-item"
+                                            (click)="highlight($event,'brandHealth');$event.stopPropagation();close();">
+                                            <a class="p-0" routerLink="/home/brandHealth">Brand Health</a></li>
+                                        <li id="brandPerceptions" class="nav-item"
+                                            (click)="highlight($event,'brandPerceptions');$event.stopPropagation();close();">
+                                            <a class="p-0" routerLink="/home/brandPerceptions">Brand Perceptions</a>
+                                        </li>
+                                        <li id="touchpointRecall" class="nav-item"
+                                            (click)="highlight($event,'touchpointRecall');$event.stopPropagation();close();">
+                                            <a class="p-0" routerLink="/home/touchpointRecall">Touchpoint Recall</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li (click)="Faucet=!Faucet">
+                                    <a class="p-0"><i class="fa fa-angle-right mr-1"></i>Faucet</a>
+                                    <ul class="text-white pl-4 pb-1" [hidden]="!Faucet">
+                                        <li (click)="Respondents=!Respondents; $event.stopPropagation()">
+                                            <a class="p-0" hidden><i class="fa fa-angle-right mr-1"></i>All Respondents</a>
+                                            <ul class="text-white">
+                                                <li id="categoryBrandHealth" class="nav-item"
+                                                    (click)="highlight($event,'categoryBrandHealth');$event.stopPropagation();close();">
+                                                    <a class="p-0" routerLink="/home/categoryBrandHealth/Faucet">Brand
+                                                        Health</a></li>
+                                                <li id="equity" hidden class="nav-item"
+                                                    (click)="highlight($event,'equity');$event.stopPropagation();close();">
+                                                    <a class="p-0" routerLink="/home/equity/Faucet">Brand Equity</a>
+                                                </li>
+                                                <li id="consideration" hidden class="nav-item"
+                                                    (click)="highlight($event,'consideration');$event.stopPropagation();close();">
+                                                    <a class="p-0"
+                                                        routerLink="/home/consideration/Faucet">Consideration</a></li>
+                                            </ul>
+                                        </li>
+                                        <li (click)="FaucetRecentPurchasers=!FaucetRecentPurchasers; $event.stopPropagation()">
+                                            <a class="p-0"><i class="fa fa-angle-right mr-1"></i>Recent Purchasers</a>
+                                            <ul class="text-white pl-4 pb-1" [hidden]="!FaucetRecentPurchasers">
+                                                <li id="RecentPurchase" class="nav-item"
+                                                    (click)="highlight($event,'RecentPurchase');$event.stopPropagation();close();">
+                                                    <a class="p-0" routerLink="/home/RecentPurchase/Faucet">Purchase
+                                                        Funnel</a></li>
+                                                <li id="PurchaseReaction" class="nav-item"
+                                                    (click)="highlight($event,'PurchaseReaction');$event.stopPropagation();close();">
+                                                    <a class="p-0" routerLink="/home/PurchaseReaction/Faucet">Purchase
+                                                        Reaction</a></li>
+                                                <li id="Disposition" class="nav-item"
+                                                    (click)="highlight($event,'Disposition');$event.stopPropagation();close();">
+                                                    <a class="p-0" routerLink="/home/Disposition/Faucet">Purchase
+                                                        Disposition</a></li>
+                                                <li id="Conversion" class="nav-item"
+                                                    (click)="highlight($event,'Conversion');$event.stopPropagation();close();">
+                                                    <a class="p-0"
+                                                        routerLink="/home/Conversion/Faucet">Conversion/Retention</a>
+                                                </li>
+                                                <li id="ReasonRetailers" class="nav-item"
+                                                    (click)="highlight($event,'ReasonRetailers');$event.stopPropagation();close();">
+                                                    <a class="p-0" routerLink="/home/ReasonRetailer/Faucet">Reasons for
+                                                        Retailers</a></li>
+                                                        <li id="reasonforRecentPurchase" class="nav-item" 
+                                                        (click)="highlight($event,'reasonForRecentPurchase');$event.stopPropagation();close();"><a class="p-0"  routerLink="/home/ReasonRecentPurchase/Faucet">Reasons for Recent Purchase</a></li>       
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li (click)="Showerhead=!Showerhead">
+                                    <a class="p-0"><i class="fa fa-angle-right mr-1"></i>Showerhead</a>
+                                    <ul class="text-white pl-4 pb-1" [hidden]="!Showerhead">
+                                        <li (click)="ShowerheadResp=!ShowerheadResp; $event.stopPropagation()">
+                                            <a class="p-0" hidden><i class="fa fa-angle-right mr-1"></i>All Respondents</a>
+                                            <ul class="text-white">
+                                                <li id="categoryBrandHealth" class="nav-item"
+                                                    (click)="highlight($event,'categoryBrandHealth');$event.stopPropagation();close();">
+                                                    <a class="p-0"
+                                                        routerLink="/home/categoryBrandHealth/Showerhead">Brand
+                                                        Health</a></li>
+                                                <li id="equity" hidden class="nav-item"
+                                                    (click)="highlight($event,'equity');$event.stopPropagation();close();">
+                                                    <a class="p-0" routerLink="/home/equity/Showerhead">Brand Equity</a>
+                                                </li>
+                                                <li id="consideration" hidden class="nav-item"
+                                                    (click)="highlight($event,'consideration');$event.stopPropagation();close();">
+                                                    <a class="p-0"
+                                                        routerLink="/home/consideration/Showerhead">Consideration</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li (click)="ShowerheadRecentPurchasers=!ShowerheadRecentPurchasers; $event.stopPropagation()">
+                                            <a class="p-0"><i class="fa fa-angle-right mr-1"></i>Recent Purchasers</a>
+                                            <ul class="text-white pl-4 pb-1" [hidden]="!ShowerheadRecentPurchasers">
+                                                <li id="RecentPurchaseShowerhead" class="nav-item"
+                                                    (click)="highlight($event,'RecentPurchaseShowerhead');$event.stopPropagation();close();">
+                                                    <a class="p-0" routerLink="/home/RecentPurchase/Showerhead">Purchase
+                                                        Funnel</a></li>
+                                                <li id="PurchaseReactionShowerhead" class="nav-item"
+                                                    (click)="highlight($event,'PurchaseReactionShowerhead');$event.stopPropagation();close();">
+                                                    <a class="p-0"
+                                                        routerLink="/home/PurchaseReaction/Showerhead">Purchase
+                                                        Reaction</a></li>
+                                                <li id="DispositionShowerhead" class="nav-item"
+                                                    (click)="highlight($event,'DispositionShowerhead');$event.stopPropagation();close();">
+                                                    <a class="p-0" routerLink="/home/Disposition/Showerhead">Purchase
+                                                        Disposition</a></li>
+                                                <li id="ConversionShowerhead" class="nav-item"
+                                                    (click)="highlight($event,'ConversionShowerhead');$event.stopPropagation();close();">
+                                                    <a class="p-0"
+                                                        routerLink="/home/Conversion/Showerhead">Conversion/Retention</a>
+                                                </li>
+                                                <li id="ReasonRetailersShowerhead" class="nav-item"
+                                                    (click)="highlight($event,'ReasonRetailersShowerhead');$event.stopPropagation();close();">
+                                                    <a class="p-0" routerLink="/home/ReasonRetailer/Showerhead">Reasons for
+                                                        Retailers</a></li>
+                                                        <li id="reasonforRecentPurchase" class="nav-item" (click)="highlight($event,'reasonForRecentPurchase');$event.stopPropagation();close();"><a class="p-0"  routerLink="/home/ReasonRecentPurchase/Showerhead">Reasons for Recent Purchase</a></li>        
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li (click)="Toilet=!Toilet">
+                                    <a class="p-0"><i class="fa fa-angle-right mr-1"></i>Toilet</a>
+                                    <ul class="text-white pl-4 pb-1" [hidden]="!Toilet">
+                                        <li (click)="ToiletResp=!ToiletResp; $event.stopPropagation()">
+                                            <a class="p-0" hidden><i class="fa fa-angle-right mr-1"></i>All Respondents</a>
+                                            <ul class="text-white">
+                                                <li id="categoryBrandHealth" class="nav-item"
+                                                    (click)="highlight($event,'categoryBrandHealth');$event.stopPropagation();close();">
+                                                    <a class="p-0" routerLink="/home/categoryBrandHealth/Toilet">Brand
+                                                        Health</a></li>
+                                                <li id="equity" hidden class="nav-item"
+                                                    (click)="highlight($event,'equity');$event.stopPropagation();close();">
+                                                    <a class="p-0" routerLink="/home/equity/Toilet">Brand Equity</a>
+                                                </li>
+                                                <li id="consideration" hidden class="nav-item"
+                                                    (click)="highlight($event,'consideration');$event.stopPropagation();close();">
+                                                    <a class="p-0"
+                                                        routerLink="/home/consideration/Toilet">Consideration</a></li>
+                                            </ul>
+                                        </li>
+                                        <li  (click)="ToiletRecentPurchasers=!ToiletRecentPurchasers; $event.stopPropagation()">
+                                            <a class="p-0"><i class="fa fa-angle-right mr-1"></i>Recent Purchasers</a>
+                                            <ul class="text-white pl-4 pb-1" [hidden]="!ToiletRecentPurchasers">
+                                                <li id="RecentPurchaseToilet" class="nav-item"
+                                                    (click)="highlight($event,'RecentPurchaseToilet');$event.stopPropagation();close();">
+                                                    <a class="p-0" routerLink="/home/RecentPurchase/Toilet">Purchase
+                                                        Funnel</a></li>
+                                                <li id="PurchaseReactionToilet" class="nav-item"
+                                                    (click)="highlight($event,'PurchaseReactionToilet');$event.stopPropagation();close();">
+                                                    <a class="p-0" routerLink="/home/PurchaseReaction/Toilet">Purchase
+                                                        Reaction</a></li>
+                                                <li id="DispositionToilet" class="nav-item"
+                                                    (click)="highlight($event,'DispositionToilet');$event.stopPropagation();close();">
+                                                    <a class="p-0" routerLink="/home/Disposition/Toilet">Purchase
+                                                        Disposition</a></li>
+                                                <li id="ConversionToilet" class="nav-item"
+                                                    (click)="highlight($event,'ConversionToilet');$event.stopPropagation();close();">
+                                                    <a class="p-0"
+                                                        routerLink="/home/Conversion/Toilet">Conversion/Retention</a>
+                                                </li>
+                                                <li id="ReasonRetailersToilet" class="nav-item"
+                                                    (click)="highlight($event,'ReasonRetailersToilet');$event.stopPropagation();close();">
+                                                    <a class="p-0" routerLink="/home/ReasonRetailer/Toilet">Reasons for
+                                                        Retailers</a></li>
+                                                <li id="ReasonforRecentPurchaseToilet" class="nav-item" (click)="highlight($event,'ReasonforRecentPurchase');$event.stopPropagation();close();"><a class="p-0"  routerLink="/home/ReasonRecentPurchase/Toilet">Reasons for Recent Purchase</a></li>         
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li (click)="TubShowerUnit=!TubShowerUnit">
+                                    <a class="p-0"><i class="fa fa-angle-right mr-1"></i>Tub / Shower Unit</a>
+                                    <ul class="text-white pl-4 pb-1" [hidden]="!TubShowerUnit">
+                                        <li (click)="TubResp=!TubResp; $event.stopPropagation()">
+                                            <a class="p-0" hidden><i class="fa fa-angle-right mr-1"></i>All Respondents</a>
+                                            <ul class="text-white">
+                                                <li id="categoryBrandHealth" class="nav-item"
+                                                    (click)="highlight($event,'categoryBrandHealth');$event.stopPropagation();close();">
+                                                    <a class="p-0"
+                                                        routerLink="/home/categoryBrandHealth/TubShowerUnit">Brand
+                                                        Health</a></li>
+                                                <li id="equity" hidden class="nav-item"
+                                                    (click)="highlight($event,'equity');$event.stopPropagation();close();">
+                                                    <a class="p-0" routerLink="/home/equity/TubShowerUnit">Brand
+                                                        Equity</a></li>
+                                                <li id="consideration" hidden class="nav-item"
+                                                    (click)="highlight($event,'consideration');$event.stopPropagation();close();">
+                                                    <a class="p-0"
+                                                        routerLink="/home/consideration/TubShowerUnit">Consideration</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li hidden (click)="RecentPurchasers=!RecentPurchasers; $event.stopPropagation()">
+                                            <a class="p-0"><i class="fa fa-angle-right mr-1"></i>Recent Purchasers</a>
+                                            <ul class="text-white pl-4 pb-1" [hidden]="!RecentPurchasers">
+                                                    <li id="RecentPurchase" class="nav-item"
+                                                    (click)="highlight($event,'RecentPurchase');$event.stopPropagation();close();">
+                                                    <a class="p-0" routerLink="/home/RecentPurchase/TubShowerUnit">Purchase
+                                                        Funnel</a></li>
+                                                <li id="PurchaseReaction" class="nav-item"
+                                                    (click)="highlight($event,'PurchaseReaction');$event.stopPropagation();close();">
+                                                    <a class="p-0" routerLink="/home/PurchaseReaction/TubShowerUnit">Purchase
+                                                        Reaction</a></li>
+                                                <li id="Disposition" class="nav-item"
+                                                    (click)="highlight($event,'Disposition');$event.stopPropagation();close();">
+                                                    <a class="p-0" routerLink="/home/Disposition/TubShowerUnit">Purchase
+                                                        Disposition</a></li>
+                                                <li id="Conversion" class="nav-item"
+                                                    (click)="highlight($event,'Conversion');$event.stopPropagation();close();">
+                                                    <a class="p-0"
+                                                        routerLink="/home/Conversion/TubShowerUnit">Conversion/Retention</a>
+                                                </li>
+                                                <li id="ReasonRetailers" class="nav-item"
+                                                    (click)="highlight($event,'ReasonRetailers');$event.stopPropagation();close();">
+                                                    <a class="p-0" routerLink="/home/ReasonRetailer">Reasons for
+                                                        Retailers</a></li>
+                                                        <li id="reasonforRecentPurchase" class="nav-item" (click)="highlight($event,'reasonForRecentPurchase');$event.stopPropagation();close();"><a class="p-0"  routerLink="/home/ReasonRecentPurchase/Toilet">Reasons for Recent Purchase</a></li>         
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div  class="panel-group">
+                <div class="panel panel-default">
+                    <div class="panel-heading clickable" (click)="Profiling=!Profiling">
+                        <h4 class="panel-title mb-0">
+                            <a><i class="fa fa-angle-right mr-1"></i>Consumer Profiling</a></h4>
+                    </div>
+                    <div id="collapse3" class="panel-collapse" [hidden]="!Profiling">
+                        <div class="panel-body">
+                            <ul class="text-white pl-4 pb-1">
+                                <li id="demographics" class="nav-item"
+                                    (click)="highlight($event,'demographics');$event.stopPropagation();close();"><a
+                                        class="p-0" routerLink="/home/Demographics">Demographics</a></li>
+                                <!-- <li id="mri" class="nav-item"
+                                    (click)="highlight($event,'mri');$event.stopPropagation();close();"><a class="p-0"
+                                        routerLink="/home/Demographics">MRI Blocks</a></li> -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade show" id="ad" role="tabpanel" [ngClass]="{ 'active':activeTab==='ad'}"
+            aria-labelledby="ad-tab">
+            <div class="panel-group">
+                    <div class="panel panel-default">
+                        <div class="panel-heading clickable">
+                            <h4 class="panel-title mb-0">
+                                <a id="comparison" class="nav-item" (click)="highlight($event,'comparison');$event.stopPropagation();close();" routerLink="/home/AdDescriptor">
+                                    Ad Comparison</a></h4>
+                        </div>
+                    </div>
+                </div>
+            <div class="panel-group">
+                <div class="panel panel-default">
+                    <div class="panel-heading clickable">
+                        <h4 class="panel-title mb-0">
+                            <a id="diagnostics" class="nav-item" (click)="highlight($event,'diagnostics');$event.stopPropagation();close();" routerLink="/home/AdDiagnostics">
+                                Ad Diagnostics
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            
+                <div class="panel-group">
+                        <div class="panel panel-default">
+                            <div class="panel-heading clickable">
+                                <h4 class="panel-title mb-0">
+                                    <a id="advert" class="nav-item" (click)="highlight($event,'advert');$event.stopPropagation();close();" routerLink="/home/Advert">
+                                        Adding Advert</a></h4>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,150 @@
+<p>reason-for-retailer works!</p>
+<div class="col-md-12 float-left  mt-5">
+    <app-loader [show]="showLoader"></app-loader>
+    <app-filter-chip-list></app-filter-chip-list>
+    <h3 *ngIf="selectedTab=='Conversion'" class="mt-2 mb-2 float-left col-5 pt-1 pos-rel"
+        style="font-size: 24px;color:#29a84a">Conversion - {{categoryHeading}}  <i class="font-xs ml-2 text-dark ">Base: Recent {{categoryHeading}} replacement / remodel</i></h3>
+    <h3 *ngIf="selectedTab=='Retention'" class="mt-2 mb-2 float-left col-5 pt-1 pos-rel"
+        style="font-size: 24px;color:#29a84a">Retention - {{categoryHeading}}  <i class="font-xs ml-2 text-dark ">Base: Recent {{categoryHeading}} replacement / remodel</i></h3>
+
+    <div *ngFor="let eq of Conversionchart">
+        <app-chart-container [chart]="eq" [updateData]="onDataUpdate"></app-chart-container>
+    </div>
+    <div *ngFor="let st of Retentionchart">
+        <app-chart-container [chart]="st" [updateData]="onDataUpdate"></app-chart-container>
+    </div>
+
+    <div class="float-right  mt-1"><span class="mr-4" hidden><i class="fa fa-caret-up text-success mr-2 fa-2x"></i> <i
+                class="fa-2x fa fa-caret-down text-danger mr-2"></i><span>Significant @ 95% level</span></span>
+        <i class="fa fa-download font-sm border rounded p-2 clickable mr-2" hidden
+            title="Download Regression Analysis"></i>
+        <i class="fa fa-table font-sm border rounded p-2 clickable mr-2" hidden title="Switch to Table View"></i>
+        <i class="fa fa-line-chart font-sm border rounded p-2 clickable" hidden title="Switch to Trended View"></i>
+        <div class="float-right">
+            <img src="../../../assets/images/excel.png" title="Download Excel" class="mr-2 clickable ml-2 mt-1"
+                style="height:20px;" (click)="ExcellExport()" />
+            <!-- <img src="../../../assets/images/ppt.png" title="Download PPT" class="clickable"
+                        style="height:20px;" /> -->
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="col-12 overflow">
+        <nav class="nav nav-pills mt-2">
+            <a id="Conversion" class="nav-item nav-link active1 clickable border pos-rel text-center col-3"
+                [class.active1]="viewMode == 'tab1'" rel="tab1" (click)="changeTable('Conversion','tab1')">
+                Conversion               
+                <div class="titleOnHover"><b>Conversion</b>: RPF_FAU_RECENT_FAU11 AND RPF_FAU_RECENT_FAU2</div>
+            </a>
+            <a class="nav-item nav-link clickable border pos-rel text-center col-3" [class.active1]="viewMode == 'tab2'"
+                rel="tab2" (click)="changeTable('Retention','tab2')">
+                Retention
+                
+                <div class="titleOnHover"><b>Retention</b>: RPF_FAU_RECENT_FAU3 AND RPF_FAU_RECENT_FAU2</div>
+            </a>
+
+        </nav>
+        <div *ngIf="selectedTab=='Conversion'" class="tab-content" id="myTabContent">
+            <div id="tab1" class="hide active border" [class.active]="viewMode == 'tab1'">
+                <table class="table table-bordered w-100 mb-0 mt-2">
+                    <tr>
+                        <td style="min-width: 50px;width:50px;"></td>
+                        <td colspan="8" class="text-center font-sm text-white" style="background-color: #868585;">Faucet
+                            Brands Seriously Considered
+                             <!-- <i class="fa fa-long-arrow-right ml-2"></i> -->
+                            </td>
+                    </tr>
+                    <tr>
+                        <td id="blankdiv" style="min-width: 50px;width:50px;"></td>
+                        <td></td>
+                        <td id="mydiv" *ngFor="let brand of ConversionData1" class="text-center"><img src={{logoByBrandCode[brand.code]}} />
+                        </td>
+                    </tr>
+                </table>
+                <table class="table table-bordered w-100 mb-0">
+                    <tr>
+                        <td [style.width.px]="getWidthBlank()" rowspan="7"
+                            class="text-center font-sm text-white pos-rel"
+                            style="background-color: #868585;min-width: 50px;">
+                            <div style="transform: rotate(-90deg); position: absolute;left: -30px;white-space: nowrap;">
+                                Faucet Purchased
+                            </div>
+                        </td>
+                        <div *ngFor="let brand of ConversionData1" class="brand">
+                            <table style="table-layout: fixed;" class="w-100">
+                                <tr>
+                                    <td [style.width.px]="getWidth()" class="text-right"><img
+                                            src={{logoByBrandCode[brand.code]}} /></td>
+                                    <td [style.width.px]="getWidth()" *ngFor="let dt of brand.Data;let i = index"
+                                        class="pos-rel base">
+                                        <div class="col-3 float-left pos-rel">
+                                            <div class="bar-score">{{dt.Score | roundOff}}</div>
+                                        </div>
+                                        <div class="col-9 float-left p-0 barBox">
+                                            <div class="bar-width" [style.width.%]="dt.Score"></div>
+                                        </div>
+
+                                        <div class="baseCount">Base: {{brand.base[i]}}</div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </tr>
+                </table>
+            </div>
+            <!-- <div id="tab2" class="hide mt-2" [class.active]="viewMode == 'tab2'">
+                Retention
+            </div> -->
+        </div>
+        <div *ngIf="selectedTab=='Retention'" class="tab-content" id="myTabContent">
+            <div id="tab2" class="hide active border" [class.active]="viewMode == 'tab2'">
+                <table class="table table-bordered w-100 mb-0 mt-2">
+                    <tr>
+                        <td style="min-width: 50px;width:50px;"></td>
+                        <td colspan="8" class="text-center font-sm text-white" style="background-color: #868585;">Faucet
+                            Brands Replaced <i class="fa fa-long-arrow-right ml-2"></i></td>
+                    </tr>
+                    <tr>
+                        <td id="blankdiv" style="min-width: 50px;width:50px;"></td>
+                        <td></td>
+                        <td id="mydiv" *ngFor="let brand of RetentionData1" class="text-center"><img
+                                src={{logoByBrandCode[brand.code]}} /></td>
+                    </tr>
+                </table>
+                <table class="table table-bordered w-100 mb-0">
+                    <tr>
+                        <td [style.width.px]="getWidthBlank()" rowspan="7"
+                            class="text-center font-sm text-white pos-rel"
+                            style="width:30px!important;background-color: #868585;min-width: 50px;">
+                            <div style="transform: rotate(-90deg); position: absolute;left: -30px;white-space: nowrap;">
+                                Faucet Purchased
+                            </div>
+                        </td>
+                        <div *ngFor="let brand of RetentionData1">
+                            <table style="table-layout: fixed;" class="w-100">
+                                <tr>
+                                    <td [style.width.px]="getWidth()" class="text-center"><img
+                                            src={{logoByBrandCode[brand.code]}} /></td>
+                                    <td [style.width.px]="getWidth()" *ngFor="let dt of brand.Data;let i = index"
+                                        class="pos-rel base">
+                                        <div class="col-3 float-left pos-rel">
+                                            <div class="bar-score">{{dt.Score | roundOff}}</div>
+                                        </div>
+                                        <div class="col-9 float-left p-0 barBox">
+                                            <div class="bar-width" [style.width.%]="dt.Score"></div>
+                                        </div>
+
+                                        <div class="baseCount">Base: {{brand.base[i]}}</div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 p-0" hidden>
+        Trended View
+    </div>
+    <div class="clearfix"></div>
+</div>

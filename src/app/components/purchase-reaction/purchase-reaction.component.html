@@ -1,0 +1,160 @@
+<div class="col-md-12 float-left  mt-5 pt-4 pb-4">
+    <app-loader [show]="showLoader"></app-loader>
+    <app-filter-chip-list></app-filter-chip-list>
+    <h3 class="mt-2 mb-2 float-left col-7 pt-1" style="font-size: 24px;color:#29a84a">Purchase Reaction -
+        {{categoryHeading}} <i class="font-xs ml-2 text-dark">Base: Recent {{categoryHeading}} replacement / remodel</i>
+    </h3>
+    <app-chart-container *ngFor="let config of PurchaseAgainT3" [chart]="config" [updateData]="onDataUpdate"
+        style="display: none"></app-chart-container>
+    <app-chart-container *ngFor="let config of RecommandationT3" [chart]="config" [updateData]="onDataUpdate"
+        style="display: none"></app-chart-container>
+    <app-chart-container *ngFor="let config of SatisfactionT3" [chart]="config" [updateData]="onDataUpdate"
+        style="display: none"></app-chart-container>
+    <app-chart-container *ngFor="let config of SocialMedia" [chart]="config" [updateData]="onDataUpdate"
+        style="display: none"></app-chart-container>
+    <div class="float-right mt-1">
+        <!-- <span class="mr-4"><i class="fa fa-caret-up text-success mr-2 fa-2x"></i> <i
+                        class="fa-2x fa fa-caret-down text-danger mr-2"></i><span>Significant @ 95% level</span></span><i
+                    class="fa fa-line-chart font-sm border rounded p-2 clickable" hidden title="Switch to Trended View"></i> -->
+        <div class="float-right">
+            <img src="../../../assets/images/excel.png" title="Download Excel" class="mr-2 clickable"
+                style="height:20px;" (click)="ExcellExport()" />
+            <!-- <img src="../../../assets/images/ppt.png" title="Download PPT" class="clickable" style="height:20px;" /> -->
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="col-12 overflow">
+        <table class="table table-bordered brandHealth w-100 table-fixed">
+            <tr class="brandList">
+                <td></td>
+                <!-- <td *ngFor="let brand of brandList"><img src="{{brand}}" /></td> -->
+                <td *ngFor="let Data of Satisfactiondata "><img src={{logoByBrandCode[Data.code]}} /></td>
+            </tr>
+            <tr>
+                <td class="text-right pos-rel"><label>Satisfaction T3B</label>                   
+                    <div class="titleOnHover"><b>Satisfaction T3B</b>: RPF_FAU_RECENT_FAU4</div>
+                </td>
+                <td class="text-center base" *ngFor="let Data of Satisfactiondata">
+                    <div class="col-3 float-left pos-rel text-center">
+                        <div class="bar-score">{{Data.score  | roundOff}}</div>
+                    </div>
+                    <div class="col-9 float-left p-0 barBox">
+                        <div class="bar-width" [style.width.%]="Data.score"></div>
+                    </div>
+                    <div class="baseCount">Base: {{Data.base  | roundOff}}</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right pos-rel"><label>Purchase Again </label>
+                    <div class="titleOnHover"><b>Purchase Again</b>: RPF_FAU_RECENT_FAU5</div>
+                </td>
+                <td class="text-center base" *ngFor="let Data of Purchasedata ">
+                    <div class="col-3 float-left pos-rel text-center">
+                        <div class="bar-score">{{Data.score | roundOff}}</div>
+
+                    </div>
+                    <div class="col-9 float-left p-0 barBox">
+                        <div class="bar-width" [style.width.%]="Data.score"></div>
+                    </div>
+
+                    <div class="baseCount">Base: {{Data.base  | roundOff}} </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right pos-rel"><label>Recommend</label>
+                    <div class="titleOnHover"><b>Recommend</b>: RPF_FAU_RECENT_FAU6</div>
+                </td>
+                <td class="text-center base" *ngFor="let Data of Recommanddata ">
+                    <div class="col-3 float-left pos-rel text-center">
+                        <div class="bar-score">{{Data.score | roundOff}}</div>
+
+                    </div>
+                    <div class="col-9 float-left p-0 barBox">
+                        <div class="bar-width" [style.width.%]="Data.score"></div>
+                    </div>
+
+                    <div class="baseCount">Base: {{Data.base  | roundOff}} </div>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+    <div class="col-12 overflow">
+        <h4 style="font-size: 20px;color:#29a84a">Social Media</h4>
+        <table class="table table-bordered brandHealth w-100 table-fixed">
+            <tr class="brandList">
+                <td></td>
+                <!-- <td *ngFor="let brand of brandList"><img src="{{brand}}" /></td> -->
+                <td *ngFor="let Data of SocialMediadata "><img src={{logoByBrandCode[Data.code]}} /></td>
+            </tr>
+            <tr>
+                <td class="text-right pos-rel"><label>Positive Posts</label>
+                    <div class="titleOnHover"><b>Positive Posts</b>: RPF_FAU_RECENT_FAU7</div>
+                </td>
+                <td class="text-center base" *ngFor="let Data of SocialMediadata ">
+                    <div class="col-3 float-left pos-rel text-center">
+                        <div class="bar-score">{{Data.op1  | roundOff}}</div>
+                    </div>
+                    <div class="col-9 float-left p-0 barBox">
+                        <div class="bar-width" [style.width.%]="Data.op1"></div>
+                    </div>
+
+                    <div class="baseCount">Base: {{Data.base  | roundOff}} </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right pos-rel"><label>Negative Posts </label>
+                    <div class="titleOnHover"><b>Negative Posts</b>: RPF_FAU_RECENT_FAU7</div>
+                </td>
+                <td class="text-center base" *ngFor="let Data of SocialMediadata ">
+                    <div class="col-3 float-left pos-rel text-center">
+                        <div class="bar-score">{{Data.op2  | roundOff}}</div>
+
+                    </div>
+                    <div class="col-9 float-left p-0 barBox">
+                        <div class="bar-width" [style.width.%]="Data.op2"></div>
+                    </div>
+
+                    <div class="baseCount">Base: {{Data.base  | roundOff}} </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right pos-rel"><label>Neutral Posts</label>
+                    <div class="titleOnHover"><b>Neutral Posts</b>: RPF_FAU_RECENT_FAU7</div>
+                </td>
+                <td class="text-center base" *ngFor="let Data of SocialMediadata ">
+                    <div class="col-3 float-left pos-rel text-center">
+                        <div class="bar-score">{{Data.op3  | roundOff}}</div>
+
+                    </div>
+                    <div class="col-9 float-left p-0 barBox">
+                        <div class="bar-width" [style.width.%]="Data.op3"></div>
+                    </div>
+
+                    <div class="baseCount">Base: {{Data.base  | roundOff}} </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right pos-rel"><label>No Posts</label>
+                    <div class="titleOnHover"><b>No Posts</b>: RPF_FAU_RECENT_FAU7</div>
+                </td>
+                <td class="text-center base" *ngFor="let Data of SocialMediadata ">
+                    <div class="col-3 float-left pos-rel text-center">
+                        <div class="bar-score">{{Data.op4  | roundOff}}</div>
+
+                    </div>
+                    <div class="col-9 float-left p-0 barBox">
+                        <div class="bar-width" [style.width.%]="Data.op4"></div>
+                    </div>
+
+                    <div class="baseCount">Base: {{Data.base  | roundOff}} </div>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+    <!-- <div class="col-12 p-0">
+                Trended View
+            </div> -->
+    <div class="clearfix"></div>
+</div>

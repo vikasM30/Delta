@@ -1,0 +1,62 @@
+<div class="col-md-12 float-left  mt-5 pt-4">
+    <app-loader [show]="showloader"></app-loader>
+    <app-filter-chip-list></app-filter-chip-list>
+    <h3 class="mt-2 mb-2 float-left col-8 pt-1 pos-rel" style="font-size: 24px;color:#29a84a">Reason for recent purchase (%) - {{Category}} <i class="font-xs ml-2 text-dark">Base: Recent faucet replacement / remodel</i>   <div class="titleOnHover"><b>Overall Brand Perceptions</b> : BRIA</div></h3>
+
+    <app-chart-container [chart]="dataShow" [updateData]="onDataUpdate"></app-chart-container>
+    <app-chart-container [chart]="dataShowTotalAvg" [updateData]="onDataUpdate"></app-chart-container>
+    <div class="float-right  mt-1"><span class="mr-4" hidden><i class="fa fa-caret-up text-success mr-2 fa-2x"></i> <i
+                class="fa-2x fa fa-caret-down text-danger mr-2"></i><span>Significant @ 95% level</span></span>
+        <i class="fa fa-download font-sm border rounded p-2 clickable mr-2" hidden title="Download Regression Analysis"></i>
+        <i class="fa fa-table font-sm border rounded p-2 clickable mr-2" hidden title="Switch to Table View"></i>
+        <i class="fa fa-line-chart font-sm border rounded p-2 clickable" hidden title="Switch to Trended View"></i>
+        <div class="float-right">
+                <img src="../../../assets/images/excel.png" title="Download Excel" class="mr-2 clickable"
+                    style="height:20px;" (click)="downloadExcelFile();"/>
+                <!-- <img src="../../../assets/images/ppt.png" title="Download PPT" class="clickable"
+                    style="height:20px;" /> -->
+            </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="col-12">
+
+        <div *ngIf="data">
+        <table class="table table-bordered w-100 mb-0">
+            <tr class="brandList">
+                <td style="width:35%"></td>
+                <td><label>Average</label><br>(Total Brands)</td>
+                <td class="text-center" *ngFor="let brand of brandList"><img src="{{brand}}" /></td>
+            </tr>
+        </table>
+    </div>
+        <div class="overflow" *ngIf="data">
+            <table class="w-100 table table-bordered">
+                <tr *ngFor="let recentDetails of dataShowData; let i = index">
+                    <td class="text-right"  style="width:35%">
+                        {{recentDetails.question}}
+                    </td>
+                    <td class="text-center">
+                      {{recentDetails.Avg}}
+                    </td>
+                    <td class="pos-rel base" *ngFor="let score of recentDetails.Score; let k = index">
+                            <div class="col-3 float-left pos-rel">
+                                    <div class="bar-score text-center">{{score | roundOff}}</div>
+                            </div>
+                        <div class="col-9 float-left p-0 barBox">
+                                <div class="bar-width" [style.width.%]="score| roundOff"></div>
+                        </div>
+
+                        <div class="baseCount">Base: {{dataShowBases[k]}}</div>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <div *ngIf="!data && !showloader" class="alert alert-info font-sm text-center col-md-4 ml-auto mr-auto mt-4">No Data Available</div>
+        <!-- <div *ngIf="!data" class="alert alert-info font-sm text-center col-md-4 ml-auto mr-auto mt-4">Loading. . .</div> -->
+    </div>
+    <div class="col-12 p-0" hidden>
+        Trended View
+    </div>
+    <div class="clearfix"></div>
+</div>

@@ -1,0 +1,451 @@
+<div class="col-md-12 float-left  mt-5 pt-4 pb-4">
+    <app-loader [show]="showloader"></app-loader>
+    <app-filter-chip-list></app-filter-chip-list>
+    <div id="alert" class="alert" *ngIf="error==true">
+            <span class="closebtn" (click)="hiddenalert()">&times;</span> 
+             Maximum 3 Adverts can be selected.
+          </div>
+    <h3 *ngIf="selectedTab=='Descriptor'" class="mt-2 mb-2 float-left col-5 pt-1 pos-rel"
+    style="font-size: 24px;color:#29a84a">Ad Descriptor  </h3>
+<h3 *ngIf="selectedTab=='CallToAction'" class="mt-2 mb-2 float-left col-5 pt-1 pos-rel"
+    style="font-size: 24px;color:#29a84a">Ad Call to Action </h3>
+     <div *ngFor="let eq of AdChart">
+        <app-chart-container [chart]="eq" [updateData]="onDataUpdate" style="display: none"></app-chart-container>
+    </div>
+
+    <div *ngFor="let eq of AdChart1">
+        <app-chart-container [chart]="eq" [updateData]="onDataUpdate" style="display: none"></app-chart-container>
+    </div>
+
+    <!-- <app-chart-container [chart]="AdTrendChart" [updateData]="onDataUpdate"></app-chart-container> -->
+    <div class="float-right mt-1">
+        <!-- <span class="mr-4"><i class="fa fa-caret-up text-success mr-2 fa-2x"></i> <i
+                                class="fa-2x fa fa-caret-down text-danger mr-2"></i><span>Significant @ 95% level</span></span><i
+                            class="fa fa-line-chart font-sm border rounded p-2 clickable" hidden title="Switch to Trended View"></i> -->
+        <div class="float-right">
+            <img src="../../../assets/images/excel.png" title="Download Excel" (click)="ExcellExport()" class="mr-2 clickable"
+                style="height:20px;" />
+            <!-- <img src="../../../assets/images/ppt.png" title="Download PPT" class="clickable" style="height:20px;" /> -->
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="col-12 overflow p-0">
+        <div class="col-3 float-left">
+            <div *ngFor="let el of addLists; let i = index" [attr.id]="i" (click)="videoSelected($event,i,el.adname)"
+                class="mb-2 border p-1 rounded video">
+                
+                <div class="col-6 float-left">
+                        <img style="height: 70px;" src={{logoByAddsCode[el.adname]}}>
+                   </div>
+
+                <div class="col-6 float-left mt-3"><label>{{el.adname}}</label></div>
+                <div class="col-6 float-left mt-3"><label>{{el.brand}}</label></div>
+                <div>
+                    {{videoSelected1(i)}}
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <div class="col-9 float-left">
+            <nav class="nav nav-pills border nav-justified">
+                <a class="nav-item nav-link active clickable border-right" [class.active]="viewMode == 'tab1'"
+                    rel="tab1" (click)="changeTable('Descriptor','tab1')">
+                    Ad Descriptor (%)
+                </a>
+                <a class="nav-item nav-link clickable border-right" [class.active]="viewMode == 'tab2'" rel="tab2"
+                    (click)="changeTable('CallToAction','tab2')">
+                    Ad Call to Action (%)
+                </a>
+            </nav>
+            <div class="tab-content" id="myTabContent">
+                <div id="tab1" class="hide border p-2" *ngIf="selectedTab=='Descriptor'" [class.active]="viewMode == 'tab1'">
+                    <!-- <app-loader [show]="showLoader"></app-loader> -->
+                    <p class="mt-1 text-secondary float-right font-sm mb-1"> *  Select maximum 3 Adverts to compare</p>
+                    <div class="clearfix"></div>
+                    <table class="table table-bordered w-100 table-fixed">
+                        <tr>
+                            <td></td>
+                            <td *ngFor="let el of AddData1" class="text-center">
+                                <video class="video-fluid z-depth-1" loop controls muted style="max-width: 100%">
+                                    <source src="{{addvidiopath[el.addname]}}" type="video/mp4" />
+                                </video>
+                            <div style="height:40px;"><label>{{el.addname}}</label></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">I enjoyed the ad</td>
+                            <td *ngFor="let el of AddData1">
+                                <div class="float-left col-4 pr-0 pos-rel">
+                                    <div class="bar-score">{{el.data[0].Score | roundOff}}</div>
+                                </div>
+                                <div class="float-left col-8 pos-rel barBox pr-0 pl-0 base">
+                                    <div class="bar-width" [style.width.%]="el.data[0].Score"></div>
+                                    <div class="baseCount">Base: {{el.base[0]}}</div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </td>
+                            <!-- <td>
+                                             <div class="float-left col-4 pr-0 pos-rel">
+                                                 <div class="bar-score"></div>
+                                             </div>
+                                             <div class="float-left col-8 pos-rel barBox pr-0">
+                                                 <div class="bar-width" [style.width.%]="50"></div>
+                                                 <div class="baseCount">Base:  </div>
+                                             </div>
+
+                                             <div class="clearfix"></div>
+                                         </td>
+                                         <td>
+                                                 <div class="float-left col-4 pr-0 pos-rel">
+                                                     <div class="bar-score"></div>
+                                                 </div>
+                                                 <div class="float-left col-8 pos-rel barBox pr-0">
+                                                     <div class="bar-width" [style.width.%]="50"></div>
+                                                     <div class="baseCount">Base:  </div>
+                                                 </div>
+
+                                                 <div class="clearfix"></div>
+                                             </td> -->
+                        </tr>
+                        <tr>
+                            <td class="text-right">The ad contained information that is important to me</td>
+                            <td *ngFor="let el of AddData1">
+                                <div class="float-left col-4 pr-0 pos-rel">
+                                    <div class="bar-score">{{el.data[1].Score | roundOff}}</div>
+                                </div>
+                                <div class="float-left col-8 pos-rel barBox pr-0 pl-0 base">
+                                    <div class="bar-width" [style.width.%]="el.data[1].Score"></div>
+                                    <div class="baseCount">Base: {{el.base[0]}}</div>
+                                </div>
+
+                                <div class="clearfix"></div>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="text-right">The ad told me something new</td>
+                            <td *ngFor="let el of AddData1">
+                                <div class="float-left col-4 pr-0 pos-rel">
+                                    <div class="bar-score">{{el.data[2].Score | roundOff}}</div>
+                                </div>
+                                <div class="float-left col-8 pos-rel barBox pr-0 pl-0 base">
+                                    <div class="bar-width" [style.width.%]="el.data[2].Score"></div>
+                                    <div class="baseCount">Base: {{el.base[0]}}</div>
+                                </div>
+
+                                <div class="clearfix"></div>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="text-right">I would like to see the ad again</td>
+                            <td *ngFor="let el of AddData1">
+                                <div class="float-left col-4 pr-0 pos-rel">
+                                    <div class="bar-score">{{el.data[3].Score | roundOff}}</div>
+                                </div>
+                                <div class="float-left col-8 pos-rel barBox pr-0 pl-0 base">
+                                    <div class="bar-width" [style.width.%]="el.data[3].Score"></div>
+                                    <div class="baseCount">Base: {{el.base[0]}}</div>
+                                </div>
+
+                                <div class="clearfix"></div>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="text-right">The ad was original</td>
+                            <td *ngFor="let el of AddData1">
+                                <div class="float-left col-4 pr-0 pos-rel">
+                                    <div class="bar-score">{{el.data[4].Score | roundOff}}</div>
+                                </div>
+                                <div class="float-left col-8 pos-rel barBox pr-0 pl-0 base">
+                                    <div class="bar-width" [style.width.%]="el.data[4].Score"></div>
+                                    <div class="baseCount">Base: {{el.base[0]}}</div>
+                                </div>
+
+                                <div class="clearfix"></div>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="text-right">The ad made me more likely to buy the brand</td>
+                            <td *ngFor="let el of AddData1">
+                                <div class="float-left col-4 pr-0 pos-rel">
+                                    <div class="bar-score">{{el.data[5].Score | roundOff}}</div>
+                                </div>
+                                <div class="float-left col-8 pos-rel barBox pr-0 pl-0 base">
+                                    <div class="bar-width" [style.width.%]="el.data[5].Score"></div>
+                                    <div class="baseCount">Base: {{el.base[0]}}</div>
+                                </div>
+
+                                <div class="clearfix"></div>
+                            </td>
+
+
+                        </tr>
+                        <tr>
+                            <td class="text-right">The ad is different from other ads I have seen for kitchen or bath plumbing products
+                            </td>
+                            <td *ngFor="let el of AddData1">
+                                <div class="float-left col-4 pr-0 pos-rel">
+                                    <div class="bar-score">{{el.data[6].Score | roundOff}}</div>
+                                </div>
+                                <div class="float-left col-8 pos-rel barBox pr-0 pl-0 base">
+                                    <div class="bar-width" [style.width.%]="el.data[6].Score"></div>
+                                    <div class="baseCount">Base: {{el.base[0]}}</div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                          <td class="text-right">The ad made the brand seem more appealing
+                          </td>
+                          <td *ngFor="let el of AddData1">
+                              <div class="float-left col-4 pr-0 pos-rel">
+                                  <div class="bar-score">{{el.data[7].Score | roundOff}}</div>
+                              </div>
+                              <div class="float-left col-8 pos-rel barBox pr-0 pl-0 base">
+                                  <div class="bar-width" [style.width.%]="el.data[7].Score"></div>
+                                  <div class="baseCount">Base: {{el.base[0]}}</div>
+                              </div>
+                              <div class="clearfix"></div>
+                          </td>
+                      </tr>
+                        <tr>
+                            <td class="text-right">I am getting tired of seeing this ad</td>
+                            <td *ngFor="let el of AddData1">
+                                <div class="float-left col-4 pr-0 pos-rel">
+                                    <div class="bar-score">{{el.data[8].Score | roundOff}}</div>
+                                </div>
+                                <div class="float-left col-8 pos-rel barBox pr-0 pl-0 base">
+                                    <div class="bar-width" [style.width.%]="el.data[8].Score"></div>
+                                    <div class="baseCount">Base: {{el.base[0]}}</div>
+                                </div>
+
+                                <div class="clearfix"></div>
+                            </td>
+
+
+                        </tr>
+                        <tr>
+                            <td class="text-right">The information in the ad was believable</td>
+                            <td *ngFor="let el of AddData1">
+                                <div class="float-left col-4 pr-0 pos-rel">
+                                    <div class="bar-score">{{el.data[9].Score | roundOff}}</div>
+                                </div>
+                                <div class="float-left col-8 pos-rel barBox pr-0 pl-0 base">
+                                    <div class="bar-width" [style.width.%]="el.data[9].Score"></div>
+                                    <div class="baseCount">Base: {{el.base[0]}}</div>
+                                </div>
+
+                                <div class="clearfix"></div>
+                            </td>
+
+
+                        </tr>
+
+                    </table>
+                </div>
+                <div id="tab2" class="hide border p-2" *ngIf="selectedTab=='CallToAction'" [class.active]="viewMode == 'tab2'">
+                    <p class="mt-1 text-secondary float-right font-sm mb-1"> *  Select maximum 3 Adverts to compare</p>
+                    <div class="clearfix"></div>
+                    <table class="table table-bordered w-100 table-fixed">
+                        <tr>
+                            <td></td>
+                            <td *ngFor="let el of AddData" class="text-center"><video class="video-fluid z-depth-1" loop
+                                    controls muted style="max-width: 100%">
+                                    <source src="{{addvidiopath[el.addname]}}" type="video/mp4" />
+                                </video>
+                                <label>{{el.addname}}</label></td>
+
+
+                        </tr>
+                        <tr>
+                            <td class="text-right">Search for the brand/product online</td>
+                            <td *ngFor="let el of AddData" style="width:200px;" class="base">
+                                <div class="float-left col-4 pr-0 pos-rel">
+                                    <div class="bar-score">{{el.data[0].Score|roundOff}}</div>
+                                </div>
+                                <div class="float-left col-8 pos-rel barBox pr-0 pl-0">
+                                    <div class="bar-width" [style.width.%]="el.data[0].Score"></div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="baseCount">Base: {{el.base[0]}}</div>
+                            </td>
+                            <!-- <td>
+                                    <div class="float-left col-4 pr-0 pos-rel">
+                                        <div class="bar-score"></div>
+                                    </div>
+                                    <div class="float-left col-8 pos-rel barBox pr-0">
+                                        <div class="bar-width" [style.width.%]="50"></div>
+                                        <div class="baseCount">Base:  </div>
+                                    </div>
+
+                                    <div class="clearfix"></div>
+                                </td>
+                                <td>
+                                        <div class="float-left col-4 pr-0 pos-rel">
+                                            <div class="bar-score"></div>
+                                        </div>
+                                        <div class="float-left col-8 pos-rel barBox pr-0">
+                                            <div class="bar-width" [style.width.%]="50"></div>
+                                            <div class="baseCount">Base:  </div>
+                                        </div>
+
+                                        <div class="clearfix"></div>
+                                    </td> -->
+                        </tr>
+                        <tr>
+                                <td class="text-right">Talk about the brand/product on social media (e.g., Facebook, Twitter)
+                            </td>
+                            <td *ngFor="let el of AddData">
+                                <div class="float-left col-4 pr-0 pos-rel">
+                                    <div class="bar-score">{{el.data[1].Score|roundOff}}</div>
+                                </div>
+                                <div class="float-left col-8 pos-rel barBox pl-0 base">
+                                    <div class="bar-width" [style.width.%]="el.data[1].Score"></div>
+                                    <div class="baseCount">Base: {{el.base[0]}}</div>
+                                </div>
+
+                                <div class="clearfix"></div>
+                            </td>
+
+                        </tr>
+                        <tr>
+                                <td class="text-right">Visit the brand/product's website</td>
+                            <td *ngFor="let el of AddData">
+                                <div class="float-left col-4 pr-0 pos-rel">
+                                    <div class="bar-score">{{el.data[2].Score|roundOff}}</div>
+                                </div>
+                                <div class="float-left col-8 pos-rel barBox pl-0 base">
+                                    <div class="bar-width" [style.width.%]="el.data[2].Score"></div>
+                                    <div class="baseCount">Base:{{el.base[0]}}</div>
+                                </div>
+
+                                <div class="clearfix"></div>
+                            </td>
+
+                        </tr>
+                        <tr>
+                                <td class="text-right">Talk about the brand/product with friends, family or co-workers
+                                </td>
+                            <td *ngFor="let el of AddData">
+                                <div class="float-left col-4 pr-0 pos-rel">
+                                    <div class="bar-score">{{el.data[3].Score|roundOff}}</div>
+                                </div>
+                                <div class="float-left col-8 pos-rel barBox pl-0 base">
+                                    <div class="bar-width" [style.width.%]="el.data[3].Score"></div>
+                                    <div class="baseCount">Base: {{el.base[0]}}</div>
+                                </div>
+
+                                <div class="clearfix"></div>
+                            </td>
+
+                        </tr>
+                        <tr>
+                                <td class="text-right">Look for the brand/product in store </td>
+                            <td *ngFor="let el of AddData">
+                                <div class="float-left col-4 pr-0 pos-rel">
+                                    <div class="bar-score">{{el.data[4].Score|roundOff}}</div>
+                                </div>
+                                <div class="float-left col-8 pos-rel barBox pl-0 base">
+                                    <div class="bar-width" [style.width.%]="el.data[4].Score"></div>
+                                    <div class="baseCount">Base: {{el.base[0]}}</div>
+                                </div>
+
+                                <div class="clearfix"></div>
+                            </td>
+
+                        </tr>
+                        <tr>
+                                <td class="text-right">Recommend the brand/product to a friend, family or co-worker </td>
+                            <td *ngFor="let el of AddData">
+                                <div class="float-left col-4 pr-0 pos-rel">
+                                    <div class="bar-score">{{el.data[5].Score|roundOff}}</div>
+                                </div>
+                                <div class="float-left col-8 pos-rel barBox pl-0 base">
+                                    <div class="bar-width" [style.width.%]="el.data[5].Score"></div>
+                                    <div class="baseCount">Base: {{el.base[0]}}</div>
+                                </div>
+
+                                <div class="clearfix"></div>
+                            </td>
+
+                        </tr>
+                        <!-- <tr>
+                                <td class="text-right">Click on the ad for more info [Scripter: show for digital ad only]</td>
+                            <td *ngFor="let el of AddData">
+                                <div class="float-left col-4 pr-0 pos-rel">
+                                    <div class="bar-score">{{el.data[6].Score|roundOff}}</div>
+                                </div>
+                                <div class="float-left col-8 pos-rel barBox pl-0 base">
+                                    <div class="bar-width" [style.width.%]="el.data[6].Score"></div>
+                                    <div class="baseCount">Base: {{el.base[0]}}</div>
+                                </div>
+
+                                <div class="clearfix"></div>
+                            </td>
+
+                        </tr> -->
+                        <tr>
+                                <td class="text-right">Write a blog entry </td>
+                            <td *ngFor="let el of AddData">
+                                <div class="float-left col-4 pr-0 pos-rel">
+                                    <div class="bar-score">{{el.data[6].Score|roundOff}}</div>
+                                </div>
+                                <div class="float-left col-8 pos-rel barBox pl-0 base">
+                                    <div class="bar-width" [style.width.%]="el.data[6].Score"></div>
+                                    <div class="baseCount">Base: {{el.base[0]}}</div>
+                                </div>
+
+                                <div class="clearfix"></div>
+                            </td>
+
+
+                        </tr>
+                        <tr>
+                                <td class="text-right">Get more information about the brand/product </td>
+                            <td *ngFor="let el of AddData">
+                                <div class="float-left col-4 pr-0 pos-rel">
+                                    <div class="bar-score">{{el.data[7].Score|roundOff}}</div>
+                                </div>
+                                <div class="float-left col-8 pos-rel barBox pl-0 base">
+                                    <div class="bar-width" [style.width.%]="el.data[7].Score"></div>
+                                    <div class="baseCount">Base: {{el.base[0]}}</div>
+                                </div>
+
+                                <div class="clearfix"></div>
+                            </td>
+
+
+                        </tr>
+                        <tr>
+                          <td class="text-right">No action after seeing the ad</td>
+                            <td *ngFor="let el of AddData">
+                                <div class="float-left col-4 pr-0 pos-rel">
+                                    <div class="bar-score">{{el.data[8].Score|roundOff}}</div>
+                                </div>
+                                <div class="float-left col-8 pos-rel barBox pr-0 base">
+                                    <div class="bar-width" [style.width.%]="el.data[8].Score"></div>
+                                    <div class="baseCount">Base: {{el.base[0]}}</div>
+                                </div>
+
+                                <div class="clearfix"></div>
+                            </td>
+
+                        </tr>
+
+
+                    </table>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <!-- <div class="col-12 p-0">
+                        Trended View
+                    </div> -->
+    <div class="clearfix"></div>
+
+</div>

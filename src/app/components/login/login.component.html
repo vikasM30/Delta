@@ -1,0 +1,87 @@
+<div>
+    <app-loader [show]="showLoader"></app-loader>
+    <div class="container-fluid p-0" id="loginPage">
+        <div class="">
+            <div style="position: absolute;left:0px;right:0px;height:45px;z-index: 9;">
+                    <img src="../../../assets/images/delta_logo.png" class="float-left pl-1 pt-1" />
+                    <img src="../../../assets/images/gfkLogo.png" class="float-right pr-1 pt-1"/>
+                <div class="clearfix"></div></div>
+            <div class="login-box col-md-12 p-0">
+                <div class="bg"></div>
+                <div class="col-md-7 float-left pos-rel p-0" style="height:100vh;">
+                    <div class="">
+                        <h1 class="text-white font-thin font-lg pl-3 pt-5 pb-5" style="font-size: 7rem;position: absolute;
+                        bottom: 0px;">BRAND
+                            <br> HEALTH
+                            <br> TRACKER</h1>
+                    </div>
+
+                </div>
+                <div class="col-md-5 float-left mt-5 pt-5" id="loginContent">
+                    <div class=" mt-5 pt-3 rounded p-4 ml-auto mr-auto col-8"
+                        style="box-shadow: 0px 2px 21px rgba(0,0,0,.05);background-color: rgba(255,255,255,.25);">
+                        <div class="text-center">
+                           
+                        </div>
+                        <h3 class="mb-4 pl-3 mt-3 text-white">Login</h3>
+                        <div class="form-group mb-3">
+                            <div class="col-12 mt-2 text-white">
+                                <label for="email">Email Address:</label>
+                            </div>
+                            <div class="col-12">
+                                <input type="email" class="form-control border-radius-0" #username id="email" />
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <div class="col-12 mt-2 text-white">
+                                <label for="pwd">Password:</label>
+                            </div>
+                            <div class="col-12">
+                                <input type="password" class="form-control border-radius-0" #password id="pwd"
+                                    (keydown.enter)="onKeypress($event, username.value)" />
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="form-group mb-3" hidden>
+                            <div class="col-12">
+                                <div class="form-check check">
+                                    <label class="hand-pointer form-check-label  text-white">
+                                        <input type="checkbox" class="form-check-input">
+                                        Remember Me
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <div class="col-md-12 float-left  mt-2 font-italic">
+                                <label for="error" class="text-white">{{ errorMsg }}</label>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <div class="col-12">
+                                <button (click)="login(username.value, password.value)"
+                                    class="btn btn-success bg-green border-radius-0 w-100"
+                                    style="margin-right: 20px;color: #fff;background-color: #29a84a;border-radius: 2px;">
+                                    Submit
+                                </button>
+                                <label for="pwd" hidden class="font-sm mt-1 clickable text-right w-100  text-white"
+                                    (click)="ForgotPwd(username.value)">Forgot
+                                    Password ?
+                                </label>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="logo"></div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+    <div style="position: absolute;right:5px;bottom:5px;">
+        <div class="mr-1 text-white font-xs float-left mt-2">Powered By </div><img src="../../../assets/images/footRebusLogo.png" /></div>
+
+</div>

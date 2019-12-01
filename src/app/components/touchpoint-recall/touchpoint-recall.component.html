@@ -1,0 +1,51 @@
+<div class="col-md-12 float-left mt-5 pt-4">
+    <app-loader [show]="showLoader"></app-loader>
+    <app-filter-chip-list></app-filter-chip-list>
+    <app-chart-container *ngFor="let config of touchpointRecallArray" [chart]="config" [updateData]="onDataUpdate"></app-chart-container>
+    <h3 class="mt-2 mb-2 float-left col-4 pt-1 pos-rel" style="font-size: 24px;color:#29a84a">Touchpoint Recall (%)<i class="font-xs ml-2 text-dark">Base: Aware of brand</i>   <div class="titleOnHover"><b>Overall Touchpoint Recall</b> :XP1</div></h3>
+    <div class="float-right mt-1 mr-2">
+        <span hidden class="mr-4"><i class="fa fa-caret-up text-success mr-2 fa-2x"></i> <i
+                class="fa-2x fa fa-caret-down text-danger mr-2"></i><span>Significant @ 95% level</span></span>
+
+        <i class="fa fa-table font-sm border rounded p-2 clickable mr-2" hidden title="Switch to Table View"></i>
+        <i class="fa fa-line-chart font-sm border rounded p-2 clickable" hidden title="Switch to Trended View"></i>
+        <div class="float-right">
+            <img src="../../../assets/images/excel.png" title="Download Excel" class="mr-2 clickable"
+                style="height:20px;" (click)="downloadExcelFile();"/>
+            <!-- <img src="../../../assets/images/ppt.png" title="Download PPT" class="clickable" style="height:20px;" /> -->
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="col-12">
+        <table class="table table-bordered">
+            <tr class="brandList">
+                <td></td>
+                <td class="text-center"  *ngFor="let logo of brandList"><img src="{{logo}}" /></td>            </tr>
+            <tr *ngFor="let tableData of touchpointRecallData">
+                <td class="text-right" style="width:25%">{{tableData.question}}</td>
+                <td *ngFor="let value of tableData.brandValues" class="base pos-rel">
+                        <div class="col-2 float-left pos-rel">
+                                <div class="bar-score">{{value.Score == 0 ? 'Na' : value.Score | roundOff}}</div>
+                            </div>
+                            <div class="col-9 float-left p-0 barBox">
+                                    <div class="bar-width" [style.width.%]="value.Score"></div>
+                            </div>
+                            <div class="baseCount">Base: {{value.Base}}</div>  
+                    <!-- <div class="float-left col-2 pr-0 mt-3">-7</div> -->
+                    <!-- <div class="float-left col-2 pr-0 mt-2 pl-2">
+                        <i class="fa fa-caret-down text-danger fa-2x"></i>
+                        <i hidden class="fa fa-caret-up text-success fa-2x"></i>
+                    </div> -->
+                    <div class="clearfix"></div>
+                </td>
+            </tr>
+        </table>
+        <div class="alert alert-info font-sm text-center  col-md-4 ml-auto mr-auto mt-4" *ngIf="!touchpointRecallData">
+            No Data Available
+        </div>
+    </div>
+    <div class="col-12 p-0" hidden>
+        Trended View
+    </div>
+    <div class="clearfix"></div>
+</div>

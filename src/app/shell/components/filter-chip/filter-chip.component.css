@@ -1,0 +1,18 @@
+.filter-widget {
+  padding: 3px 10px;
+  background-color: #f9f9f9;
+  border: 0px solid #f4f4f4;
+  background-color: #29a84a;
+  font-weight: normal;
+  border-radius: 2px;
+  font-size: .8rem;
+  margin-right: 4px;
+  display: inline-block;
+  margin-top: 2px;color:#fff;padding-top: 5px;
+}
+.clickable {
+  cursor: pointer;
+}
+.float-left{
+  float: left;
+}

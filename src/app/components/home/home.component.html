@@ -1,0 +1,72 @@
+<!-- main container -->
+<div>
+    <!-- header to contain logo and user logout -->
+    <!-- <app-header></app-header> -->
+    <div class="col-md-12 text-white w-100 p-2" style="background-color: #323232;position: fixed;z-index: 9">
+        <div class="navbar-expand-lg p-0 navbar-light">
+            <a class="navbar-brand float-left clickable pt-2" (click)="openNavMenu()">
+                <i class="fa fa-bars"></i>
+            </a>
+            <a class="navbar-brand float-left" href="#"><img style="height:30px;"
+                    src="../../../assets/images/BrandIcons/Delta_logo_400x136.png" alt="Delta Logo" /></a>
+            <div class="float-left font-thin mr-4 clickable" style="line-height: 28px;margin-top: 3px;">
+                <span class="d-inline-block">
+                    <span class="text-white upperCase d-inline-block mt-1">{{headerName}}</span>
+                </span>
+            </div>
+            <div class="collapse navbar-collapse " id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto" *ngIf="!hideTimePeriod">
+                        <li class="nav-item pl-2" title="Select Time Period">
+                                <span class="mr-2 font-sm float-left" style="margin-top: 10px!important;">Select Time Period : </span><span class="float-left"><app-time-period-group></app-time-period-group></span>
+                            </li>
+                        <li *ngIf="headerName == 'BRAND HEALTH' ||headerName=='BRAND HEALTH - TOILET' ||headerName =='BRAND HEALTH - TUBSHOWERUNIT'
+                       || headerName == 'TOUCHPOINT RECALL' || headerName == 'CATEGORY BRAND HEALTH' || headerName == 'BRAND HEALTH - FAUCET' ||
+                        headerName == 'BRAND SNAPSHOT - FAUCET' || headerName == 'BRAND SNAPSHOT - SHOWERHEAD' ||
+                        headerName == 'BRAND SNAPSHOT - TOILET' || headerName == 'BRAND SNAPSHOT - TUBSHOWERUNIT' || headerName == 'BRAND HEALTH - SHOWERHEAD' ||
+                        headerName == 'BRAND HEALTH - FAUCET' ||  headerName == 'BRAND HEALTH - SHOWERHEAD' ||
+                        headerName == 'BRAND HEALTH - TOILET' ||  headerName == 'BRAND EQUITY'||headerName == 'BRAND EQUITY - FAUCET'||
+                        headerName =='BRAND EQUITY - SHOWERHEAD'||headerName =='BRAND EQUITY - TOILET'||headerName =='BRAND EQUITY - TUBSHOWERUNIT'||headerName =='BRAND CONSIDERATION - FAUCET'||
+                        headerName =='BRAND CONSIDERATION - SHOWERHEAD'||headerName =='BRAND CONSIDERATION - TOILET'||headerName =='BRAND CONSIDERATION - TUBSHOWERUNIT'
+                        ||headerName == 'RECENT PURCHASE - FAUCET'||headerName == 'RECENT PURCHASE - TOILET'||headerName == 'RECENT PURCHASE - TUBSHOWERUNIT'||headerName == 'RECENT PURCHASE - SHOWERHEAD'
+                        ||headerName == 'PURCHASE REACTION - FAUCET'||headerName == 'PURCHASE REACTION - TOILET'||headerName == 'PURCHASE REACTION - TUBSHOWERUNIT'||headerName == 'PURCHASE REACTION - SHOWERHEAD'
+                        ||headerName == 'PURCHASE DISPOSITION - FAUCET'||headerName == 'PURCHASE DISPOSITION - SHOWERHEAD'||headerName == 'PURCHASE DISPOSITION - TUBSHOWERUNIT'||headerName == 'PURCHASE DISPOSITION - TOILET'
+                        ||headerName == 'CONVERSION - FAUCET'||headerName =='CONVERSION - SHOWERHEAD'||headerName =='CONVERSION - TUBSHOWERUNIT'||headerName =='CONVERSION - TOILET'
+                        ||headerName == 'CONVERSION - TUBSHOWERUNIT'||headerName=='Reason for Recent Purchase - FAUCET'||headerName == 'Reason for Recent Purchase - SHOWERHEAD'
+                        ||headerName == 'Reason for Recent Purchase - TOILET' || headerName == 'AdDetails'"
+                        class="nav-item mr-2 brand-selector" title="Brand Selector" style="width:200px;">
+                                <app-brand-selector></app-brand-selector>
+                        </li>
+                        <li *ngIf="headerName == 'Ad Diagnostics'"
+                        class="nav-item mr-2 brand-selector" title="AD Selector" style="width:200px;">
+                          <app-ad-selector></app-ad-selector>
+                        </li>
+                        <li *ngIf="headerName == 'Ad Details'"
+                        class="nav-item mr-2 brand-selector" title="AD Selector" style="width:200px;">
+                          <app-add-selector-single-select></app-add-selector-single-select>
+                        </li>
+                   
+
+          <li class="nav-item" title="Upload Data File">
+                        <a class="nav-link clickable" (click)="uploadFile()">
+                            <i class="fa fa-upload"></i>
+                        </a>
+                    </li>
+          <li class="nav-item clickable" title="Apply Filter">
+            <a class="nav-link clickable" (click)="openFilterMenu()">
+              <i class="fa fa-filter"></i>
+            </a>
+          </li>
+          <li class="nav-item clickable" title="Logout">
+            <a (click)="logout()" class="nav-link clickable"
+              ><i class="fa fa-sign-out mr-1"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+  <app-nav-menu></app-nav-menu>
+  <app-filter-menu></app-filter-menu>
+  <router-outlet></router-outlet>
+</div>

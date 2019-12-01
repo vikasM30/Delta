@@ -1,0 +1,35 @@
+.brandList img{height:30px;}
+.brandList td{text-align: center}
+.brandHealth td{min-width:150px;max-width:150px;vertical-align: middle}
+.barBox{height:40px;}
+label{font-size:1rem;font-weight:600;text-decoration: none;text-shadow: 0px;}
+.bar-width{position: absolute;left:5px;bottom:5px;top:5px;width:50%;background-color:#868585}
+.bar-score{position: absolute;left:20px;top:35px;color:#fff}
+.table{width:99.8%!important}
+.legend-box{width:15px;height:15px;font-size: .8rem}
+.baseCount{
+    position: absolute;
+    top: 30%;
+    left: 10%;
+    background-color: #4d4d4d;
+    color: #fff;
+    border: 1px solid #4d4d4d;
+    border-radius: 2px;
+    box-shadow: 0px 2px 2px rgba(0,0,0,0.15);
+    margin-left: 1px;
+    margin-top: 0px;
+    display: none;
+    transition: all 0.5s ease;
+    text-align: center;
+    font-size: 12px;
+    padding: 0px 10px;z-index: 9;
+  }
+.base:hover .baseCount{display: block;}
+
+td:first-child:hover .titleOnHover{display: block}
+
+tr:nth-child(2) td{border-bottom:0px!important}
+tr:nth-child(3) td{border-top:0px!important}
+
+.considerationScore{position: absolute;top:40%; right:0px; left:0px;;z-index: 8;}
+.font-md{font-size: .9rem}

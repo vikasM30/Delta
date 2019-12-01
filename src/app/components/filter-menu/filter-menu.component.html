@@ -1,0 +1,64 @@
+<div id="filter-nav" class="sidenav pl-2" style="left: initial;right: -6px;" appClickCatcher>
+    <!-- <div style="padding: 5px 5px 0px 20px;">
+        <div class="float-left">
+            <span class="filter-widget">{{text}}
+                <i class="fa fa-times clickable" title="Remove Filter"></i>
+            </span>
+        </div>
+        <div style="clear:both"></div>
+    </div> -->
+<div class="font-sm text-white  mb-2 ml-2"><i class="fa fa-filter mr-2"></i>APPLY FILTER</div>
+    <a class="closebtn" title="Close" (click)="close()">&times;</a>
+    <div class="filter-conatiner">
+        <p style="background-color: #29a84a;color: #fff;" class="p-1 mb-0">{{respondentLevelConfig.category}}</p>
+        <div class="panel-group filterNav mt-0">
+            <div class="panel panel-default">
+                <div class="panel-body p-0">
+                    <app-filter *ngFor="let config of respondentLevelConfig.filterConfig" [filterConfig]="config">
+                    </app-filter>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="filter-conatiner productLevel">
+        <p style="background-color: #29a84a;color: #fff;" class="p-1 mb-0">{{productLevelConfig.category}}</p>
+        <div class="panel-group filterNav mt-0">
+            <div class="panel panel-default">
+                <div class="panel-body p-0">
+                    <app-filter *ngFor="let config of productLevelConfig.filterConfig" [filterConfig]="config">
+                    </app-filter>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="filter-conatiner">
+        <p style="background-color: #29a84a;color: #fff;" class="p-1 mb-0">{{overAllbrandLevelConfig.category}}</p>
+        <div class="panel-group filterNav mt-0">
+            <div class="panel panel-default">
+                <div class="panel-body p-0">
+                    <app-filter *ngFor="let config of overAllbrandLevelConfig.filterConfig" [filterConfig]="config">
+                    </app-filter>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div  class="filter-conatiner">
+        <p style="background-color: #29a84a;color: #fff;" class="p-1 mb-0">{{productByBrandLevelConfig.category}}</p>
+        <div class="panel-group filterNav mt-0">
+            <div class="panel panel-default">
+                <div class="panel-body p-0">
+                    <div class="consideration">
+                        <p  (click)="consideration=!consideration" style="border:1px solid #787878;color: #DEDEDE;background-color: #252525;" class="p-1 mb-0 mt-1">{{productByBrandLevelConfig.considrationCategory}} <i class="fa fa-angle-down mr-2 ml-auto float-right" style="font-size: 20px;"></i></p>
+                        <app-filter  [hidden]="!consideration" *ngFor="let config of productByBrandLevelConfig.considrationFilterConfig" [filterConfig]="config">
+                        </app-filter>
+                    </div>
+                    <app-filter *ngFor="let config of productByBrandLevelConfig.filterConfig" [filterConfig]="config">
+                        </app-filter>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div style="margin: 10% 0;display: inline-block;width: 100%;text-align: center;">
+    </div>
+</div>

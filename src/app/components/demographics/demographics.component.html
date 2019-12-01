@@ -1,0 +1,443 @@
+<div class="col-md-12 float-left mt-5 pt-4">
+    <app-loader [show]="showLoader"></app-loader>
+    <app-chart-container *ngFor="let config of demographicChartConfigArray" [chart]="config"
+        [updateData]="onDataUpdate"></app-chart-container>
+    <app-filter-chip-list></app-filter-chip-list>
+    <h3 *ngIf="selectedTab=='Demographics'" class="mt-2 mb-2 float-left col-5 pt-1 pos-rel"
+        style="font-size: 24px;color:#29a84a">Demographics <i class="font-xs text-dark ml-2">Base: Total</i>
+    </h3>
+    <h3 *ngIf="selectedTab=='MRIBlock'" class="mt-2 mb-2 float-left col-5 pt-1 pos-rel"
+        style="font-size: 24px;color:#29a84a">MRI Blocks
+    </h3>
+    <div class="float-right  mt-1" hidden><span class="mr-4" hidden><i
+                class="fa fa-caret-up text-success mr-2 fa-2x"></i> <i
+                class="fa-2x fa fa-caret-down text-danger mr-2"></i><span>Significant @ 95% level</span></span>
+        <i class="fa fa-download font-sm border rounded p-2 clickable mr-2" title="Download Regression Analysis"></i>
+        <i class="fa fa-table font-sm border rounded p-2 clickable mr-2" title="Switch to Table View"></i>
+        <i class="fa fa-line-chart font-sm border rounded p-2 clickable" title="Switch to Trended View"></i>
+        <div class="float-right">
+            <!-- <img src="../../../assets/images/excel.png" title="Download Excel" class="mr-2 clickable ml-2 mt-1"
+                style="height:20px;" (click)=downloadExcelFile() /> -->
+            <!-- <img src="../../../assets/images/ppt.png" title="Download PPT" class="clickable"
+                        style="height:20px;" /> -->
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="col-12 overflow">
+        <nav class="nav nav-pills">
+            <a class="nav-item nav-link active1 clickable border  border-bottom-0" [class.active1]="viewMode == 'tab1'"
+                rel="tab1" (click)="changeTable('Demographics','tab1')">
+                Demographics
+            </a>
+            <a class="nav-item nav-link clickable border border-bottom-0" [class.active1]="viewMode == 'tab2'"
+                rel="tab2" (click)="changeTable('MRIBlock','tab2')">
+                MRI Block
+            </a>
+        </nav>
+        <div class="tab-content" id="myTabContent">
+            <div id="tab1" class="hide active border mb-2" [class.active]="viewMode == 'tab1'">
+                <div class="mt-4">
+                    <div class="col-5 float-left pl-0">
+                        <div class="col-md-5 float-left">
+                            <div class="card">
+                                <div class="card-header green font-weight-bold pt-0 pos-rel">GENDER
+                                    <div class="float-right">
+                                        <img src="../../../assets/images/excel.png" title="Download Excel"
+                                            class="mr-2 clickable ml-2 mt-1" style="height:20px;"
+                                            (click)="downloadExcelFile(genderData,'Gender')"></div>
+                                   
+                                    <div class="titleOnHover"><b>GENDER</b>: SCREEN_GENDER</div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="card-body">
+                                    <table class="tabel w-100 base pos-rel">
+                                        <tr>
+                                            <td class="text-center p-2 border-top-0" *ngFor="let gender of genderData">
+                                                <div class="font-md">{{gender.Score | roundOff}}
+                                                    <!-- <i class="fa fa-caret-down text-danger fa-2x"></i>
+                                                        <i class="fa fa-caret-up text-success fa-2x"></i> -->
+                                                </div>
+                                                <i class="fa fa-4x"
+                                                    [ngClass]="{'fa-male':gender.SeriesName == 'Male','fa-female':gender.SeriesName == 'Female'}"></i>
+                                                <div class="baseCount">Base: {{gender.Base}}</div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7 float-left p-1">
+                            <div class="card">
+                                <div class="card-header green font-weight-bold pt-0 pos-rel">AGE
+                                    <div class="float-right">
+                                        <img src="../../../assets/images/excel.png" title="Download Excel"
+                                            class="mr-2 clickable ml-2 mt-1" style="height:20px;"
+                                            (click)="downloadExcelFile(ageData,'Age')">
+                                    </div>
+                                    
+                                    <div class="titleOnHover"><b>AGE</b>: SCREEN_AGE</div>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <table class="table w-100" style="height:100px;">
+                                    <tr>
+                                        <td class="text-center border-top-0  pos-rel base"
+                                            *ngFor="let ageDetail of ageData">
+                                            <div style="background-color: #fff;width:100%"
+                                                [style.height.%]="100-25-ageDetail.Score | roundOff"></div>
+                                            <div>{{ageDetail.Score | roundOff}}</div>
+                                            <div style="background-color: #868585;width:100%"
+                                                [style.height.%]="ageDetail.Score | roundOff"></div>
+                                            <div class="mt-2">{{ageDetail.SeriesName}}</div>
+                                            <div class="baseCount">Base: {{ageDetail.Base}}</div>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="col-2 float-left p-1">
+                        <div class="border-top-0 border-bottom-0">
+                            <div class="card">
+                                <div class="card-header green font-weight-bold pt-0 pos-rel">AVERAGE INCOME
+                                    <div class="float-right">
+                                        <img src="../../../assets/images/excel.png" title="Download Excel"
+                                            class="mr-2 clickable ml-2 mt-1" style="height:20px;"
+                                            (click)="downloadExcelFile(averageIncomeDataExcel,'Average Income')">
+                                    </div>
+                                   
+                                    <div class="titleOnHover"><b>AVERAGE INCOME</b>: HHINC</div>
+                                    <div class="clearfix"></div>
+                                    <div class="text-center green d-inline-block ml-5 mt-5 base pos-rel"
+                                        style="font-size: 2.5rem!important;">
+                                        ${{averageIncomeData.Score}}
+                                        <div class="baseCount">Base: {{averageIncomeData.Base}}</div>
+                                    </div>
+
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-5 float-left p-1">
+                        <div class="card-body p-1">
+                            <div class="card-header green font-weight-bold pt-0 pos-rel">INCOME BREAKS
+                                <div class="float-right">
+                                    <img src="../../../assets/images/excel.png" title="Download Excel"
+                                        class="mr-2 clickable ml-2 mt-1" style="height:20px;"
+                                        (click)="downloadExcelFile(incomeData,'Income Breaks')" />
+                                </div>
+                              
+                                <div class="titleOnHover"><b>INCOME BREAKS</b>: HHINC</div>
+
+                                <div class="clearfix"></div>
+                            </div>
+
+                            <table class="table w-100" style="height:120px;">
+                                <tr>
+                                    <td class="text-center border-top-0  base pos-rel"
+                                        *ngFor="let incomeDetail of incomeData">
+                                        <div style="background-color: transparent;width:100%"
+                                            [style.height.%]="100-42-incomeDetail.Score | roundOff"></div>
+                                        <div>{{incomeDetail.Score | roundOff}}</div>
+                                        <div style="background-color: #868585;width:100%"
+                                            [style.height.%]="incomeDetail.Score | roundOff"></div>
+                                        <div style="letter-spacing: initial;height: 50px;line-height: initial;"
+                                            class="mt-2">
+                                            {{incomeDetail.SeriesName}}</div>
+                                        <div class="baseCount">Base: {{incomeDetail.Base}}</div>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="mt-4">
+                    <div class="col-4 float-left">
+                        <div class="border-top-0 border-bottom-0">
+                            <div class="card">
+                                <div class="card-header green font-weight-bold pt-0 pos-rel">MARITAL STATUS
+                                    <div class="float-right">
+                                        <img src="../../../assets/images/excel.png" title="Download Excel"
+                                            class="mr-2 clickable ml-2 mt-1" style="height:20px;"
+                                            (click)="downloadExcelFile(martialData,'Martial Status')">
+
+                                    </div>
+                                    <div class="titleOnHover"><b>MARITAL STATUS</b>: DEMO_MARITAL</div>
+
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="card-body p-0" style=" padding-bottom: 0;">
+                                    <table class="w-100 table table-bordered">
+                                        <tr *ngFor="let status of martialData">
+                                            <td class="text-right">
+                                                {{status.SeriesName}}
+                                            </td>
+                                            <td class="pos-rel base" style="width:60%;">
+                                                <div class="col-2 float-left pos-rel">
+                                                    <div class="bar-score">{{status.Score | roundOff}}</div>
+                                                </div>
+                                                <div class="col-10 float-left p-0 barBox">
+                                                    <div class="bar-width" [style.width.%]="status.Score"></div>
+                                                </div>
+
+                                                <div class="baseCount">Base: {{status.Base}}</div>
+
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 float-left">
+                        <div class="border-top-0 border-bottom-0">
+                            <div class="card">
+                                <div class="card-header green font-weight-bold pt-0 pos-rel">RECENT BUYER
+                                    <div class="float-right">
+                                        <img src="../../../assets/images/excel.png" title="Download Excel"
+                                            class="mr-2 clickable ml-2 mt-1" style="height:20px;"
+                                            (click)="downloadExcelFile(recentBuyerData,'Recent Buyer')">
+
+                                    </div>
+                                    <div class="titleOnHover"><b>RECENT BUYER</b>: </div>
+
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="card-body p-0" style=" padding-bottom: 0;">
+                                    <table class="w-100 table table-bordered">
+
+                                        <tr *ngFor="let recentbuyer of recentBuyerData">
+                                            <td class="text-right">
+                                                {{recentbuyer.SeriesName}}
+                                            </td>
+                                            <td class="pos-rel base" style="width:60%;">
+                                                <div class="col-2 float-left pos-rel">
+                                                    <div class="bar-score">{{recentbuyer.Score | roundOff}}
+                                                    </div>
+                                                </div>
+                                                <div class="col-10 float-left p-0 barBox">
+                                                    <div class="bar-width"
+                                                        [style.width.%]="recentbuyer.Score | roundOff">
+                                                    </div>
+                                                </div>
+
+                                                <div class="baseCount">Base: {{recentbuyer.Base}}</div>
+
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 float-left">
+                        <div class="border-top-0 border-bottom-0">
+                            <div class="card">
+                                <div class="card-header green font-weight-bold pt-0 pos-rel">INTENDER
+                                    <div class="float-right">
+                                        <img src="../../../assets/images/excel.png" title="Download Excel"
+                                            class="mr-2 clickable ml-2 mt-1" style="height:20px;"
+                                            (click)="downloadExcelFile(intenderBuyerData,'Intender Buyer')">
+                                    </div>
+                                    <div class="titleOnHover"><b>INTENDER</b>: </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="card-body p-1" style=" padding-bottom: 0;">
+                                    <table class="w-100 table table-bordered">
+                                        <tr *ngFor="let intender of intenderBuyerData">
+                                            <td class="text-right">
+                                                {{intender.SeriesName}}
+                                            </td>
+                                            <td class="pos-rel base" style="width:60%;">
+                                                <div class="col-2 float-left pos-rel">
+                                                    <div class="bar-score">{{intender.Score | roundOff}}</div>
+                                                </div>
+                                                <div class="col-10 float-left p-0 barBox">
+                                                    <div class="bar-width" [style.width.%]="intender.Score | roundOff">
+                                                    </div>
+                                                </div>
+
+                                                <div class="baseCount">Base: {{intender.Base}}</div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="mt-4">
+                    <div class="col-4 float-left">
+                        <div class="border-top-0 border-bottom-0">
+                            <div class="card">
+                                <div class="card-header green font-weight-bold pt-0 pos-rel">AREA
+                                    <div class="float-right">
+                                        <img src="../../../assets/images/excel.png" title="Download Excel"
+                                            class="mr-2 clickable ml-2 mt-1" style="height:20px;"
+                                            (click)="downloadExcelFile(areaData,'Area')" />
+                                    </div>
+                                  
+                                    <div class="titleOnHover"><b>AREA</b>: DEMO_HOME_AREA</div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="card-body">
+                                    <app-chart-container [chart]="areaPieChartConfig" [updateData]="onDataUpdate">
+                                    </app-chart-container>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 float-left">
+                        <div class="border-top-0 border-bottom-0">
+                            <div class="card" style="margin-bottom: 0;">
+                                <div class="card-header green font-weight-bold pt-0 pos-rel">AVERAGE PEOPLE IN HOUSEHOLD
+                                    <div class="float-right">
+                                        <img src="../../../assets/images/excel.png" title="Download Excel"
+                                            class="mr-2 clickable" style="height:20px;"
+                                            (click)="downloadExcelFile(houseHoldDataExcel,'AVERAGE HOUSEHOLD PEOPLE')">
+
+                                    </div>
+                                  
+                                    <div class="titleOnHover"><b>AVERAGE PEOPLE IN HOUSEHOLD</b>: DEMO_HHSIZE</div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="text-center green ml-5 d-inline-block mt-3 mb-5" style="font-size: 2.5rem;">
+                                    {{houseHoldData.Score}}</div>
+                                    <div class="baseCount">Base: {{houseHoldData.Base}}</div>
+                                    <div class="clearfix"></div>
+                            </div>
+                        </div>
+                        <div class="border-top-0 border-bottom-0">
+                            <div class="card" style="margin-bottom: 0;">
+                                <div class="card-header green font-weight-bold pt-0 pos-rel">REGION
+                                    <div class="float-right">
+                                        <img src="../../../assets/images/excel.png" title="Download Excel"
+                                            class="mr-2 clickable ml-2 mt-1" style="height:20px;"
+                                            (click)="downloadExcelFile(regionData,'Region')">
+                                    </div>
+                                   
+                                    <div class="titleOnHover"><b>REGION</b>: </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="card-body p-1" style=" padding-bottom: 0;">
+                                    <table class="table w-100" style="height:200px; table-layout:fixed">
+                                        <tr>
+                                            <td class="text-center border-top-0 base pos-rel"
+                                                *ngFor="let regionPlace of regionData">
+                                                <div style="background-color: #fff;width:100%"
+                                                    [style.height.%]="100-25-regionPlace.Score | roundOff">
+                                                </div>
+                                                <div>{{regionPlace.Score |roundOff}}</div>
+                                                <div style="background-color: #868585;width:100%"
+                                                    [style.height.%]="regionPlace.Score | roundOff">
+                                                </div>
+                                                <div>{{regionPlace.SeriesName}}</div>
+                                                <div class="baseCount">Base: {{regionPlace.Base}} </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 float-left">
+                        <div class="border-top-0 border-bottom-0">
+                            <div class="card">
+                                <div class="card-header green font-weight-bold pt-0 pos-rel">KIDS IN HOUSEHOLD
+                                    <div class="float-right">
+                                        <img src="../../../assets/images/excel.png" title="Download Excel"
+                                            class="mr-2 clickable ml-2 mt-1" style="height:20px;"
+                                            (click)="downloadExcelFile(kidsHouseHoldData,'Kids in Household')">
+                                    </div>
+                                   
+                                    <div class="titleOnHover"><b>KIDS IN HOUSEHOLD</b>: DEMO_HHKIDS </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="card-body base">
+                                    <app-chart-container [chart]="childrenPieChartConfig" [updateData]="onDataUpdate">
+                                    </app-chart-container>
+                                    <!-- <div class="baseCount">Base: 2431</div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div id="tab2" class="hide border" [class.active]="viewMode == 'tab2'">
+                <div class="col-8 float-left">
+                    <div class="border-top-0 border-bottom-0 mt-4">
+                        <div class="card" style="margin-bottom: 0;">
+                            <div class="card-header green font-weight-bold pt-0 pos-rel">OPINIONS ON LIFESTYLE <div class="float-right">
+                                    <img src="../../../assets/images/excel.png" title="Download Excel"
+                                        class="mr-2 clickable ml-2 mt-1" style="height:20px;"
+                                        (click)="MriDownloadExcelFile(OpinionsData,'Opinions',mriOpinionMapping)">
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="card-body p-0">
+                                <app-chart-container [chart]="opinionChartConfig" [updateData]="onDataUpdate">
+                                </app-chart-container>
+                                <div class="float-right">
+                                    <img src="../../../assets/images/excel.png" title="Download Excel"
+                                        class="mr-2 clickable ml-2 mt-1" style="height:20px;"
+                                        (click)="MriDownloadExcelFile(SecondOpinionsData,'SecondOpinions',mriSecondOpinionMapping)">
+                                </div>
+                                <app-chart-container [chart]="secondOpinionChartConfig" [updateData]="onDataUpdate">
+                                </app-chart-container>
+                            </div>
+                            <div class="card-body p-0">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4 float-left pl-0">
+                    <div class="border-top-0 border-bottom-0  mt-4">
+                        <div class="card" style="margin-bottom: 0;">
+                            <div class="card-header green font-weight-bold pt-0 pos-rel">GREAT DEAL OF KNOWLEDGE IN THIS AREA                        <div class="float-right">
+                                    <img src="../../../assets/images/excel.png" title="Download Excel"
+                                        class="mr-2 clickable ml-2 mt-1" style="height:20px;"
+                                        (click)="downloadExcelFile(knowledgeAreaData,'Knowledge Area')">
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="card-body p-0">
+                                <app-chart-container [chart]="knowledgeAreaChart" [updateData]="onDataUpdate">
+                                </app-chart-container>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border-top-0 border-bottom-0 mt-4">
+                        <div class="card" style="margin-bottom: 0;">
+                            <div class="card-header green font-weight-bold pt-0 pos-rel">PEOPLE TRUST MY ADVICE ON THIS TOPIC
+                                <div class="float-right">
+                                    <img src="../../../assets/images/excel.png" title="Download Excel"
+                                        class="mr-2 clickable ml-2 mt-1" style="height:20px;"
+                                        (click)="downloadExcelFile(adviceOnTopicsData,'Advice on Topics')">
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="card-body p-0">
+                                <app-chart-container [chart]="adviceOnTopicsChart" [updateData]="onDataUpdate">
+                                </app-chart-container>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 p-0" hidden>
+        Trended View
+    </div>
+    <div class="clearfix"></div>
+</div>

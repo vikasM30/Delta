@@ -1,0 +1,60 @@
+
+.barBox{height:30px;background-color: #fafafa;}
+.bar-width{width:0%;background-color:#868585;position: relative;height:30px;}
+.bar-score{position: absolute;left:5%;top:8px;color:#868585;float: left;}
+td{height:40px;}
+.brandList img{height:30px;}
+.brandList td.selected {
+    border: 1px solid #29a84a;
+}
+.brandList td{padding:.5rem}
+.brandList td .fa {
+    display: none;
+}
+.baseCount{
+    position: absolute;
+    top: 30%;
+    left: 10%;
+    background-color: #4d4d4d;
+    color: #fff;
+    border: 1px solid #4d4d4d;
+    border-radius: 2px;
+    box-shadow: 0px 2px 2px rgba(0,0,0,0.15);
+    margin-left: 1px;
+    margin-top: 0px;
+    display: none;
+    transition: all 0.5s ease;
+    text-align: center;
+    font-size: 12px;
+    padding: 0px 10px;transition: all ease 0.25s;
+  }
+.base:hover .baseCount{display: block;z-index: 9}
+.brandList td.selected .fa {
+    display: block;
+    color: #fff;
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    z-index: 8;
+}
+.box{position: relative;padding: 5px;}
+.box::before, .box::after {
+    content: '';
+    position: absolute;
+    top: -7px;
+    right: -7px;
+    border-color: transparent;
+    border-style: solid;
+    border-radius: 2px!important;
+}
+.box::after {
+    border-radius: 0.4em;
+    border-width: 1.35em;
+    border-right-color: #1d5f30;
+    border-top-color: #1d5f30;
+    display: none;
+}
+.brandList td.selected .box::after,.brandList td.selected .box::after{display: block;}
+.legend-box{width:15px;height:15px;border:1px solid #ffffff;}
+.legend-box ~ span{font-size: .85rem!important}
+.considerationScore{position: absolute;top:40%; right:0px; left:0px;;z-index: 8;}

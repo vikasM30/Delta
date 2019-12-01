@@ -1,0 +1,47 @@
+/* ------------Loader------------------ */
+
+.overlay {
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+    position: absolute;
+    background: #414141;
+    z-index: 11;
+    opacity: 0.7;
+  position: fixed;
+  }
+  
+  .overlay__inner {
+    left: 0;
+    top: 0;
+    width: inherit;
+    height: inherit;
+    position: absolute;
+  }
+  
+  .overlay__content {
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .spinner {
+    width: 75px;
+    height: 75px;
+    display: inline-block;
+    border-width: 4px;
+    border-color: rgba(255, 255, 255, 0.05);
+    border-top-color: #fff;
+    animation: spin 1s infinite linear;
+    border-radius: 100%;
+    border-style: solid;
+  }
+  
+  @keyframes spin {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  /* ------------Loader Ends------------------ */

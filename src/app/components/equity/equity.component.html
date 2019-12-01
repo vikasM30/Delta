@@ -1,0 +1,116 @@
+<div class="col-md-12 float-left  mt-5 pt-4 pb-4">
+    <app-loader [show]="showloader"></app-loader>
+
+    <app-filter-chip-list></app-filter-chip-list>
+    <h3 class="mt-2 mb-2 float-left col-5 pt-1" style="font-size: 24px;color:#29a84a">Brand Equity - {{categoryHeading}}
+        <i class="font-xs ml-2 text-dark">Base: Total</i>
+        <div class="titleOnHover"><b>Faucet Brand Equity</b> : CBR?CON</div>
+    </h3>
+    <div *ngFor="let eq of equity">
+        <app-chart-container [chart]="eq" [updateData]="onDataUpdate"></app-chart-container>
+    </div>
+    <div *ngFor="let st of strong">
+        <app-chart-container [chart]="st" [updateData]="onDataUpdate"></app-chart-container>
+    </div>
+    <div class="float-right mt-1 mr-2">
+        <!-- <span class="mr-4"><i class="fa fa-caret-up text-success mr-2 fa-2x"></i> <i
+                class="fa-2x fa fa-caret-down text-danger mr-2"></i><span>Significant @ 95% level</span></span><i
+            class="fa fa-line-chart font-sm border rounded p-2 clickable" hidden title="Switch to Trended View"></i> -->
+        <div class="float-right">
+             <img src="../../../assets/images/excel.png" title="Download Excel" class="mr-2 clickable"  (click)="downloadEquityCSV()"
+                style="height:20px;" />
+            <!-- <img src="../../../assets/images/ppt.png" title="Download PPT" class="clickable" style="height:20px;" /> -->
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="col-12 overflow">
+        <table class="table table-bordered brandHealth w-100">
+            <tr class="brandList">
+                <td></td>
+                <td *ngFor="let brand of equitydatawithbrandcode1"> <img src={{logoByBrandCode[brand.Code]}}></td>
+            </tr>
+            <tr>
+                <td class="text-center pos-rel"><label>Strong Relationships</label></td>
+                <td class="base pos-rel" *ngFor="let brand of strongdata2">
+                    <div *ngIf="brand.score!=0" class="text-center font-sm">
+                        {{brand.score}}
+                    </div>
+                    <div class="baseCount">Base: {{brand.base}}</div>
+                    <div class="clearfix"></div>
+                    <div *ngIf="brand.score==0"
+                        class="alert alert-info font-sm text-center col-md-12 ml-auto mr-auto mt-4">No Data Available
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center pos-rel"><label>Brand Equity</label></td>
+                <td class="base" *ngFor="let brand of equitydatawithbrandcode1">
+                    <div class="card-body p-4">
+                        <div *ngIf="brand.Data[0].score!=0"
+                            style="width:100px;margin: 0 auto;margin-bottom: 5px;padding-bottom:0px!important;"
+                            class="p-0 pb-0">
+                            <div style="height:150px;">
+                                <div [style.height.%]="100-brand.Data[0].score"></div>
+                                <div style="width:100%;height:65%;background-color: #669900"
+                                    [style.height.%]="brand.Data[0].score" class="text-white text-center pos-rel base">
+                                    <div *ngIf="brand.Data[0].score!=0" class="considerationScore"
+                                        [ngStyle]="{'top':brand.Data[0].score > 100 ? '4%' : '-15px' ,'color':brand.Data[0].score > 100 ? 'white' : '#868585'}">
+                                        {{brand.Data[0].score}}</div>
+                                    <div class="baseCount">Base: {{brand.base}}</div>
+                                </div>
+                            </div>
+                            <div style="width:120%;height:2px;background-color: #4d4d4d;margin-left: -10%"
+                                class="text-white text-center"></div>
+                            <div style="height:150px;">
+                                <div style="width:100%;height:25%;background-color: #CCCC00"
+                                    [style.height.%]="brand.Data[1].score" class="text-white text-center pos-rel base">
+                                    <div class="considerationScore" *ngIf="brand.Data[1].score!=0"
+                                        [ngStyle]="{'top':brand.Data[1].score > 100 ? 102 +'%' : '102%' ,'color':brand.Data[1].score > 100 ? 'white' : '#868585'}">
+                                        {{brand.Data[1].score}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div style="width:100px;margin: 0 auto;margin-bottom: 5px;padding-bottom:0px!important;"
+                            class="p-0 pb-0">
+                          
+                           <div style="height:130px;" class="pos-rel">
+                            <div style="width:100%;background-color: #669900;position: absolute;bottom: 0px;left:0px;right:0px;" [style.height.%]="brand.Data[0].score" class="text-white text-center pos-rel base">
+                                <div class="considerationScore" [ngStyle]="{'top':brand.Data[0].score > 5 ? '4%' : '-20px' ,'color':brand.Data[0].score > 5 ? 'white' : 'black'}">
+                                    {{brand.Data[0].score}}</div>
+                                <div class="baseCount">Base: {{brand.base}}</div>
+                            </div>
+                           </div>
+                            <div style="width:120%;height:2px;background-color: #4d4d4d;margin-left: -10%"
+                                class="text-white text-center"></div>
+                                <div style="height:130px;">
+                            <div style="width:100%;height:25%;background-color: #CCCC00" [style.height.%]="brand.Data[1].score" class="text-white text-center pos-rel base">
+                                <div class="considerationScore" [ngStyle]="{'top':brand.Data[1].score > 5 ? '4%' : '10px' ,'color':brand.Data[1].score > 5 ? 'white' : 'black'}">
+                                    {{brand.Data[1].score}}</div>
+                            </div>
+                                </div>
+                            <div hidden style="width:100%;height:10%;background-color: #fafafa"
+                                class="text-center font-md">29<i class="fa fa-caret-up ml-2"></i></div>
+                        </div> -->
+                    </div>
+                    <div *ngIf="brand.Data[0].score==0"
+                        class="alert alert-info font-sm text-center col-md-12 ml-auto mr-auto mt-4">No Data Available
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <div class="col-3 ml-auto mr-auto mt-4">
+            <div class="col-6 float-left" title="Strong Relationship and Consider 1st/2nd">
+                <div style="background-color: #669900" class="legend-box float-left mr-2"></div>
+                <span>Active</span>
+            </div>
+            <div class="col-6 float-left" title="Strong Relationship and Also/Not Consider">
+                <div style="background-color: #CCCC00" class="legend-box float-left mr-2"></div>
+                <span>Latent</span>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="col-12 p-0">
+        Trended View
+    </div> -->
+    <div class="clearfix"></div>
+</div>

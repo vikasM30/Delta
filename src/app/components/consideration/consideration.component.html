@@ -1,0 +1,89 @@
+<div class="col-md-12 float-left  mt-5 pt-4 pb-4">
+    <app-loader [show]="showLoader"></app-loader>
+    <app-filter-chip-list></app-filter-chip-list>
+    <h3 class="mt-2 mb-2 float-left col-4 pt-1" style="font-size: 24px;color:#29a84a">Brand Consideration - {{categoryHeaderName}}</h3>
+    <app-chart-container *ngFor="let config of considerationChart" [chart]="config" [updateData]="onDataUpdate" style="display: none"></app-chart-container>
+    <div class="float-right mt-1 mr-2">
+        <!-- <span class="mr-4"><i class="fa fa-caret-up text-success mr-2 fa-2x"></i> <i
+                class="fa-2x fa fa-caret-down text-danger mr-2"></i><span>Significant @ 95% level</span></span><i
+            class="fa fa-line-chart font-sm border rounded p-2 clickable" hidden title="Switch to Trended View"></i> -->
+        <div class="float-right">
+             <img src="../../../assets/images/excel.png" title="Download Excel" (click)="downloadConsiderationScore()" class="mr-2 clickable"
+                style="height:20px;" />
+            <!-- <img src="../../../assets/images/ppt.png" title="Download PPT" class="clickable" style="height:20px;" /> -->
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="col-12 overflow">
+        <table class="table table-bordered brandHealth w-100">
+            <tr class="brandList">
+                <td></td>
+                <td *ngFor="let brand of brandList"><img src="{{brand}}" /></td>               
+            </tr>
+            <tr>
+                <td class="text-center pos-rel"><label>1st/2nd Choice(net)</label>
+                </td>
+                <td class="base pos-rel" *ngFor="let choice of Choices; let i = index;">
+                    <div class="text-center font-md" style="color:#868585">{{choice}}</div>
+                    <div class="clearfix"></div>
+                    <div class="alert alert-info font-sm text-center col-md-12 ml-auto mr-auto mt-4" *ngIf="!choice">No Data Available</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center pos-rel"><label>Consideration</label></td>
+                <td class="base" *ngFor="let config of FisrtChoiceArray; let i = index;">
+                    <div class="card-body pt-4">
+                        <div style="width:100px;height:300px;background-color: #fff;margin: 0 auto;margin-bottom:5px;"
+                            class="pb-0 pos-rel"  [style.height.px]="getContentHeight()">
+                            <div style="width:100%;height:30%;background-color: #fff"
+                                [style.height.%]="100-FisrtChoiceArray[i]-SecondChoiceArray[i]-ConsiderArray[i]-NotConsiderArray[i]"
+                                class="text-white text-center pos-rel">
+                            </div>
+                            <div style="width:100%;height:30%;background-color: #4d4d4d" [style.height.%]="FisrtChoiceArray[i]"
+                                class="text-white text-center pos-rel">
+                                <div class="considerationScore" [ngStyle]="{'top':FisrtChoiceArray[i] > 10 ? '40%' : '-20px' ,'color':FisrtChoiceArray[i] > 10 ? 'white' : '#868585'}">{{FisrtChoiceArray[i]}}</div>
+                            </div>
+                            <div class="baseCount">Base: {{ConsiderationBases[0]}}</div>
+                            <div style="width:100%;height:20%;background-color: #777676" [style.height.%]="SecondChoiceArray[i]"
+                                class="text-white text-center pos-rel">
+                                <div class="considerationScore">{{SecondChoiceArray[i]}}</div>
+                            </div>
+                            <div style="width:100%;height:40%;background-color: #969595" [style.height.%]="ConsiderArray[i]"
+                                class="text-white text-center pos-rel">
+                                <div class="considerationScore">{{ConsiderArray[i]}}</div>
+                            </div>
+                            <div style="width:100%;height:10%;background-color: #B8B8B8" [style.height.%]="NotConsiderArray[i]"
+                                class="text-white text-center pos-rel">
+                                <div class="considerationScore">{{NotConsiderArray[i]}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="alert alert-info font-sm text-center col-md-12 ml-auto mr-auto mt-4" *ngIf="!config">No Data Available</div>
+                    <div class="clearfix"></div>
+                </td>
+            </tr>
+        </table>
+        <div class="col-md-6 ml-auto mr-auto mt-4 font-sm">
+            <div class="col-3 float-left">
+                <div style="background-color: #4d4d4d" class="legend-box  float-left mr-2 "></div>
+                <span>First Choice</span>
+            </div>
+            <div class="col-3 float-left">
+                <div style="background-color: #777676" class="legend-box float-left mr-2"></div>
+                <span>Second Choice</span>
+            </div>
+            <div class="col-3 float-left">
+                <div style="background-color: #969595" class="legend-box float-left mr-2"></div>
+                <span>Consider </span>
+            </div>
+            <div class="col-3 float-left">
+                <div style="background-color: #B8B8B8" class="legend-box float-left mr-2"></div>
+                <span>Not Consider</span>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="col-12 p-0">
+        Trended View
+    </div> -->
+    <div class="clearfix"></div>
+</div>

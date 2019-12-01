@@ -1,0 +1,37 @@
+<div class="col-md-12 float-left mt-5 pt-4">
+    <h3 class="mt-2 mb-2 float-left col-4 pt-3" style="font-size: 24px;color:#29a84a">Upload File</h3>
+    <app-loader [show]="showLoader"></app-loader>
+    <div class="clearfix"></div>
+    
+    <div class="col-12">
+            <!-- <button class="btn btn-primary float-right mb-2 clickable">
+                <i class="fa fa-upload mr-2"></i>
+                Upload File 
+            </button> -->
+            <label for="repository-file" class="btn btn-primary float-right mb-2 clickable">
+                <i class="fa fa-upload mr-2"></i>
+                Upload File
+            </label>
+            <input type="file" id="repository-file" style="visibility:hidden;"  (change)="uploadFileInput($event.target.files)">
+        <table class="table w-100 table-bordered table-striped table-hover">
+            <tr class="header">
+                <td>Username</td>
+                <td>FIle Name</td>
+                <td>Uploaded</td>
+                <td>Status</td>
+                <td>Actions<br><span class="font-xs">Downlaod/Delete</span></td>
+            </tr>
+            <tr *ngFor="let fileDetail of uploadFileList; let i= index;">
+                <td>{{fileDetail.username}}</td>
+                <td>{{fileDetail.filename}}</td>
+                <td>{{fileDetail.SynchronizedOn}}</td>
+                <td>{{fileDetail.status}}</td>
+                <td><a class="fa fa-download mr-3 text-success fa-2x clickable" title="Download File" download [href]="downloadLink+'/Download/'+fileDetail.ID"></a>
+                    <i class="fa fa-trash-o mr-2 text-danger fa-2x clickable" title="Delete File" (click)="deletefile(fileDetail.ID,i)"></i></td>
+            </tr>
+        </table>
+        <div class="alert alert-info font-sm text-center col-md-12 ml-auto mr-auto mt-4" *ngIf="uploadFileList.length == 0">No Data Available</div>
+    </div>
+
+    <div class="clearfix"></div>
+</div>

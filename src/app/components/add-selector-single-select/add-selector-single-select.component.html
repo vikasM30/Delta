@@ -1,0 +1,47 @@
+<div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" style="background-color: #29a84a;width: 100%;
+    border-radius: 2px;border: 1px solid #787878;text-align: left;margin-top: 4px;
+    padding-bottom: 2px;" type="button" (click)="adSelector=!adSelector" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      AD Selector
+    </button>
+    <div  class="dropdown-menu w-100" style="width:250px!important;height: 90vh;right: 0px;left: auto;overflow: auto;" aria-labelledby="dropdownMenuButton" [hidden]="!adSelector">
+      <!-- <a class="dropdown-item" href="#">Action</a> -->
+      <div class="p-0 ">
+        <!-- <button class="btn btn-success mb-2 float-right mr-2 p-2" style="height: 32px;border-radius: 2px;" title="Submit ads after selection" (click)="sendselId()"> Submit Ads </button> -->
+          <label style="background-color: #29a84a;" class="text-white w-100 p-1">Delta</label>
+        <div class="form-check round" *ngFor="let ad1 of idDelta; let i = index">            
+            <label class="hand-pointer form-check-label" [for]="i" [attr.id]="ad1" (click)="checked($event,ad1,ad1,'delta')">
+                <input class="form-check-input" type="radio" name=" " id=" 1+i" value="option1">
+              {{ad1}}
+            </label>
+          </div>
+          <br>
+          <label style="background-color: #29a84a;" class="text-white w-100 p-1">American Standard</label>
+        <div class="form-check round" *ngFor="let ad2 of idAs;  let i = index">
+            <label class="hand-pointer form-check-label" [for]="2+i" [attr.id]=ad2 (click)="checked($event,ad2,ad2,'AS')">
+              <input class="form-check-input" type="radio" name=" " id=" 2+i" value="option2">
+              {{ad2}}
+            </label>
+          </div>
+          <br>
+          <label style="background-color: #29a84a;" class="text-white w-100 p-1">Kohler</label>
+        <div class="form-check round" *ngFor="let ad3 of idKohler; let i = index">           
+            <label class="hand-pointer form-check-label" [for]=" 3+i" [attr.id]=ad3 (click)="checked($event,ad3,ad3,'Kohler')">
+                <input class="form-check-input" type="radio" name=" " id=" 3+i" value="option3" checked>
+              {{ad3}}
+            </label>
+          </div>
+          <br>
+          <label style="background-color: #29a84a;" class="text-white w-100 p-1">Moen</label>
+        <div class="form-check round" *ngFor="let ad4 of idMoen; let i = index">           
+            <label class="hand-pointer form-check-label" [for]=" 4+i" [attr.id]=ad4 (click)="checked($event,ad4,ad4,'Moen')">
+                <input class="form-check-input" type="radio" name=" " id=" 4+1" value="option4" checked>
+              {{ad4}}
+            </label>
+          </div>
+      </div>
+      <button hidden class="btn btn-secondary" type="radio" (click)="sendselId();">
+         hello
+        </button>
+    </div>
+  </div>

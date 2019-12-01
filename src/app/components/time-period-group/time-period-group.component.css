@@ -1,0 +1,19 @@
+/*custom radio CSS*/
+
+.round {width: 14px;height: 20px;position: relative;border-radius: 50px;min-height: 14px !important;
+    margin: 5px 5px 5px 0px;border: 1px solid #e2e2e2;display: inherit}
+.round label {height: 1rem;cursor: pointer;position: absolute;left: 3px;padding-left: 20px;
+    min-height: 1rem;top: 1px;font-size: 0.9rem;color: #717171;}
+.round label:after {content: '';
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    top: 2px;
+    left: 0px;
+    background: #000;
+    opacity: 0;
+    border-radius: 50px;}
+.round label:hover::after {opacity: 0.5;}
+.round input[type=radio] {visibility: hidden;}
+.round input[type=radio]:checked+label:after {opacity: 1;}
+.round input[aria-checked=true]+label {border: 1px #20A4F3 solid;}

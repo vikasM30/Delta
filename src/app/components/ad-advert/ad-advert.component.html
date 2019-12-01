@@ -1,0 +1,196 @@
+<div class="col-md-12 float-left  mt-5 pt-4 pb-0">
+    <app-loader [show]="showLoader"></app-loader>
+    <!-- <app-filter-chip-list></app-filter-chip-list> -->
+    <app-chart-container *ngFor="let config of adDetailListChart" [chart]="config"
+    [updateData]="onDataUpdate"></app-chart-container>
+    <h3 hidden class="mt-2 mb-2 float-left col-4 pt-1" style="font-size: 24px;color:#29a84a">Ad Diagnostics</h3>
+    <div class="float-right mt-1">
+        <!-- <span class="mr-4"><i class="fa fa-caret-up text-success mr-2 fa-2x"></i> <i
+            class="fa-2x fa fa-caret-down text-danger mr-2"></i><span>Significant @ 95% level</span></span><i
+            class="fa fa-line-chart font-sm border rounded p-2 clickable" hidden title="Switch to Trended View"></i> -->
+            <!-- <div class="float-right">
+                <img src="../../../assets/images/excel.png" title="Download Excel" class="mr-2 clickable"
+                style="height:20px;" />
+                <img src="../../../assets/images/ppt.png" title="Download PPT" class="clickable" style="height:20px;" />
+            </div> -->
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-12 overflow">
+            <div class="col-4 float-left">
+                <div class="green font-weight-normal mb-2">ALL ADVERTS <button class="btn btn-primary float-right" (click)="AddNewAd()"><i class="fa fa-plus mr-2"></i>New Ad</button>
+                    <div class="clearfix"></div>
+                </div>
+                <div style="height:78vh;overflow: auto;">
+                    <div *ngFor="let addetail of addLists; let i = index" class="border rounded mb-2 p-2 mr-2 clickable media alert" [attr.id]="i" (click)="highlight($event,i)">
+                        <div class="col-6 float-left"><video class="video-fluid z-depth-1" loop controls muted style="max-width: 100%">
+                                <source [src]="addetail.videopath" type="video/mp4"/>
+                            </video>
+                        </div>
+                        <div class="pos-rel col-6 float-left">
+                            <div (click)="selectAdandGetEcr(addetail.adid)">
+                                <label class="mr-3">{{addetail.adname}}</label><br>
+                                <div>{{addetail.brand}}</div>
+                                <div>{{addetail.adlength}}</div>
+                            </div>
+                            <i class="fa fa-trash clickable fa-2x text-danger" style="position: absolute; top:5px;right:5px;" (click)="openPopup(addetail.adid,i)"></i>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>        
+                </div>
+                <div id="adsDeleteModal" class="modal" tabindex="-1" role="dialog"  [hidden]="!showPopup">
+                    <div class="modal-dialog modal-md" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Deleting Ad</h5>
+                                <button type="button" (click)="close()" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mt-2 mb-2 pt-1 font-weight-normal" style="font-size: 16px;">Are you sure to delete this ad ?</div>
+                            </div>
+                            <div class="modal-footer">                   
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="deleteAd()">Yes</button>
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="close()">No</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="col-4 float-left">
+                <div class="green">AD DETAILS</div>
+                <table class="table table-bordered w-100 table-fixed mt-4">
+                    <tr>
+                        <td class="text-right">Ad Name</td>
+                        <td>
+                            <select class="form-control" [(ngModel)]="adDetailList.adname">
+                                <option value="" selected>Select Option</option>
+                                <option *ngFor="let ad of addropdownList" [ngValue]="ad.SeriesName">{{ad.SeriesName}}</option>
+                            </select>
+                    </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">Ad Type</td>
+                        <td><select class="form-control" [(ngModel)]="adDetailList.adtype">
+                                <option value="" selected>Select Option</option>
+                            <option *ngFor="let type of adType" [ngValue]="type">{{type}}</option>
+                        </select></td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">Brand</td>
+                        <td><select class="form-control" [(ngModel)]="adDetailList.brand">
+                                <option value="" selected>Select Option</option>
+                            <option *ngFor="let brands of adsBrands" [ngValue]="brands">{{brands}}</option>
+                        </select></td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">Product Category</td>
+                        <td><select class="form-control" [(ngModel)]="adDetailList.product_category">
+                            <option value="" selected>Select Option</option>
+                            <option *ngFor="let category of adsCategory" [ngValue]="category">{{category}}</option>
+                        </select></td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">Ad Length</td>
+                        <td><input type="text" class="form-control" placeholder="Ad Length" [(ngModel)]="adDetailList.adlength"></td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">Numerator Ad Code</td>
+                        <td><input type="text" class="form-control" placeholder="Numerator Ad Code" [(ngModel)]="adDetailList.numerator_ad_code"></td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">First Run Date</td>
+                        <td>
+                            <div class="col-9 float-left p-0"> <input  [matDatepicker]="start" [min]="minDate" [max]="maxDate"  class="form-control" placeholder="First Run Date" [formControl]="firstDate" (click)="start.open()" ></div>
+                            <div class="col-3 float-left">
+                                    <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
+                                    <mat-datepicker #start></mat-datepicker>
+                            </div>
+                            <div class="clearfix"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">Last Run Date</td>
+                        <td>
+                                <div class="col-9 float-left p-0"><input  [matDatepicker]="Last" [min]="minDate" [max]="maxDate"  class="form-control" placeholder="Last Run Date" [formControl]="LastDate"  (click)="Last.open()" > </div>
+                                <div class="col-3 float-left">
+                                        <mat-datepicker-toggle matSuffix [for]="Last"></mat-datepicker-toggle>
+                            <mat-datepicker #Last></mat-datepicker>
+                                </div>
+                                <div class="clearfix"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">Quartor Start Date</td>
+                        <td><input type="text" class="form-control" placeholder="Quartor Start Date" [(ngModel)]="adDetailList.quarterenddate"></td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">Quartor Last Date</td>
+                        <td><input type="text" class="form-control" placeholder="Quartor Last Date" [(ngModel)]="adDetailList.quarterstartdate"></td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">
+                            <label for="Ad-image-upload" class="btn btn-primary clickable">
+                                <i class="fa fa-upload mr-2"></i>Upload
+                                Image
+                            </label>
+                            <input type="file" id="Ad-image-upload" style="visibility:hidden;" (change)="uploadImage($event.target.files)">
+                        </td>
+                        <td class="text-center">
+                            <label for="Ad-video-upload" class="btn btn-primary clickable">
+                                <i class="fa fa-upload mr-2"></i>Upload
+                                Video
+                            </label>
+                            <input type="file" id="Ad-video-upload" style="visibility:hidden;" (change)="uploadVideo($event.target.files)">
+                        </td>
+                    </tr>
+                </table>
+    
+            </div>
+            <div class="col-4 float-left">
+                <div class="alert alert-success alert-dismissible" [hidden]="!showNotification" style="position: absolute;top: 0;right: 0;">
+                    <strong>Success!</strong> Your changes have been saved
+                </div>
+                <div class="alert alert-danger" [hidden]="!errorNotification" style="position: absolute;top: 0;right: 0;">
+                    <strong>Danger!</strong>  Someting went wrong.
+                </div>
+                <div class="green mb-2">ECR <button class="btn btn-primary float-right" (click)="saveEcr(ECRquarter.value,ECRNumber.value)"><i class="fa fa-plus mr-2"></i>Add</button>
+                    <div class="clearfix"></div>
+                </div>
+                <table class="table table-bordered w-100 table-fixed">
+                    <tr>
+                        <td class="text-right">Quarter</td>
+                        <td class="text-center">
+                            <select id="ECRquarter"class="form-control"  ([ngModel])="ecrDetails.quarter" #ECRquarter>
+                                <option>Please Select Option</option>
+                                <option *ngFor="let qt of quarter"[ngValue]="qt.SeriesName">{{qt.SeriesName}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">ECR</td>
+                        <td class="text-center"><input type="text" id="ECRNumber" class="form-control" ([ngModel])="ecrDetails.ecr" #ECRNumber></td>
+                    </tr>
+                </table>
+                <table class="table table-bordered w-100 table-fixed">
+                    <tr>
+                        <td class="text-center"><label>Quarter</label></td>
+                        <td class="text-center"><label>ECR</label></td>
+                        <td class="text-center"><label>Action</label></td>
+                    </tr>
+                    <tr *ngFor="let ecr of ecrList;let i = index">
+                        <td class="text-center">{{ecr.quarter}}</td>
+                        <td class="text-center">{{ecr.ecr}}</td>
+                        <td class="text-center"><i class="fa fa-trash clickable  text-danger" (click)="deleteEcr(ecr.ecrid,i)"></i></td>
+                    </tr>
+                </table>
+                <button class="btn btn-success float-right" (click)="saveAndUpdateAd();" [disabled]= "isDisabledbutton">{{button}}</button>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <!-- <div class="col-12 p-0">
+                                Trended View
+                            </div> -->
+        <div class="clearfix"></div>
+    </div>
